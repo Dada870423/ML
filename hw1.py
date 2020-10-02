@@ -13,3 +13,4 @@ LambDa = float(sys.argv[2])
 
 a_matrix = A_MATRIX(filename = filename, polynomial_Bases = polynomial_Bases)
 A = a_matrix.getA()
+print("A:", A)
