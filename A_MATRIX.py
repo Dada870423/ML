@@ -12,12 +12,17 @@ class A_MATRIX(object):
 
     def getA(self):
         pre_A = self.poly_base()
-        A = np.asarray(pre_A, dtype='float').reshape((-1,1))
+        A = np.asarray(pre_A, dtype='float')
         return A
     
     def getB(self):
-        B = np.asarray(self.y, dtype='float').reshape((-1,1))
+        B = np.asarray(self.y, dtype='float')
         return B
+
+    def getX(self):
+        #B = np.asarray(self.y, dtype='float')
+        return self.x
+
 
     def poly_base(self):
         A = list()
