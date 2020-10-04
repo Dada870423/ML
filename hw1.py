@@ -29,12 +29,13 @@ LambDa = float(sys.argv[2])
 a_matrix = A_MATRIX(filename = filename, polynomial_Bases = polynomial_Bases)
 A = a_matrix.getA()
 b = a_matrix.getB()
+input_x = a_matrix.getX()
 #print(A)
 # print("A:", A)
 
 ## RLSE
 Rlse = RLSE(A = A, b = b, LambDa = LambDa)
-Rlse_ans, Rlse_loss = Rlse.rLsE()
+Rlse_ans, Rlse_loss = Rlse.rLsE(input_x = input_x)
 
 print("Rlse_ans", Rlse_ans)
 print("Rlse_loss", Rlse_loss)
