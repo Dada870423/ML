@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.linalg import lu
+
 
 class RLSE(object):
     def __init__(self, A, b, LambDa):
@@ -9,10 +9,7 @@ class RLSE(object):
 
     def rLsE(self, input_x):
         trash, size_A = self.A.shape
-        #print(self.A)
-        print("size_A", self.A.shape)
-        #print("size_A_T", self.A.T.shape)
-        #print("b_shape", self.b.shape)
+
         ## ATA+lambda I
         ATA = self.A.T @ self.A
         I = np.identity(size_A)
@@ -25,17 +22,13 @@ class RLSE(object):
         #print("Inve_ATA_Lamda_I_AT", Inve_ATA_Lamda_I_AT.shape)
         Inve_ATA_Lamda_I_ATb = Inve_ATA_Lamda_I_AT @ self.b
         #print("Inve_ATA_Lamda_I_ATb", Inve_ATA_Lamda_I_ATb.shape)
-        loss = self.rLse_loss(input_x = self.A, ans = Inve_ATA_Lamda_I_ATb)
-
-        print(loss)
+        loss = self.rLse_loss(ans = Inve_ATA_Lamda_I_ATb)
         #print("Inve_ATA_Lamda_I_ATb", Inve_ATA_Lamda_I_ATb)
         return Inve_ATA_Lamda_I_ATb, loss
 
-
-
-    def rLse_loss(self, input_x, ans):
+    def rLse_loss(self, ans):
         ## x * ans
-        ans_vector = input_x @ ans
+        ans_vector = self.A @ ans
         return np.sum(np.square(ans_vector - self.b))
 
 

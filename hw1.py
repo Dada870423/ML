@@ -7,19 +7,16 @@ import os
 
 from A_MATRIX import A_MATRIX
 from RLSE import RLSE
-def plot(x1,b,parameters_rlse):
-    #rlse
-    plt.title('rlse')
-    plt.plot(x1,b,'ro')
-    x1_min=min(x1)
-    x1_max=max(x1)
-    x=np.linspace(x1_min-1,x1_max+1,500)
-    y=np.zeros(x.shape)
-    for i in range(len(parameters_rlse)):
-        y+=parameters_rlse[i]*np.power(x,i)
-    plt.plot(x,y,'-k')
-    plt.show()
+from NEWTON import NEWTON
 
+
+def funCtion(x, parameter):
+    lead = len(parameter)
+    y = 0
+    for iter_i in range(len(parameter) - 1, -1, -1):
+        tmp = x ** iter_i
+        y = y + tmp * parameter[len(parameter) - iter_i - 1]
+    return y
 
 filename = sys.argv[1]
 polynomial_Bases = int(sys.argv[2])
@@ -37,31 +34,47 @@ input_x = a_matrix.getX()
 Rlse = RLSE(A = A, b = b, LambDa = LambDa)
 Rlse_ans, Rlse_loss = Rlse.rLsE(input_x = input_x)
 
-print("Rlse_ans", Rlse_ans)
-print("Rlse_loss", Rlse_loss)
+print("LSE:")
+print("Fitting line: ", end = " ")
 
-xx = a_matrix.getX()
 
-xx1 = np.asarray(xx,dtype='float').reshape((-1,1))
-b1 = np.asarray(b,dtype='float').reshape((-1,1))
-Rlse_ans1 = np.asarray(Rlse_ans,dtype='float').reshape((-1,1))
+for iter_ in range(len(Rlse_ans)):
+    if iter_ == len(Rlse_ans) - 1:
+        print("( ", Rlse_ans[iter_], " )")
+    else:
+        print("( ", Rlse_ans[iter_], " ) X^", len(Rlse_ans) - iter_ - 1, " + ", end = "")
+#print("Rlse_ans:", Rlse_ans)
+print("Total error: ", Rlse_loss)
 
-plot(xx1, b1, Rlse_ans1)
-#print(xxx - b)
-#print(b)
-#haha = abs((xxx - b))
-#print("haha: ", haha.sum())
-#ans = (xxx - b)*(xxx - b)
-#print("ans: ", ans.sum())
-#print(ans)
-#print((xxx - b)*(xxx - b))
 
-#
+## plot RLSE
+plot_x = np.arange(min(input_x) - 1, max(input_x) + 1, 0.01)
+RLSE_plot_y = funCtion(plot_x, Rlse_ans)
+plt.plot(plot_x, RLSE_plot_y, color = 'aqua', label = "Rlse")
+plt.scatter(input_x, b, c = "red", label = "TestData")
+plt.legend(loc = 'upper right')
+plt.show()
 
-#plt.scatter(xx, b, color = 'aqua', label = "input")
-#plt.plot(xx, xxx, color = 'brown', label = "line")
-#plt.legend(loc = 'upper right')
+## Newton
+Newton = NEWTON(A = A, b = b)
+Newton_ans, Newton_loss = Newton.nEwToN(input_x = input_x)
 
-#plt.show()
+print("Newton's Method:")
+print("Fitting line: ", end = " ")
 
+for iter_ in range(len(Newton_ans)):
+    if iter_ == len(Newton_ans) - 1:
+        print("( ", Newton_ans[iter_], " )")
+    else:
+        print("( ", Newton_ans[iter_], " ) X^", len(Rlse_ans) - iter_ - 1, " + ", end = "")
+#print("Newton_ans:", Newton_ans)
+print("Total error: ", Newton_loss)
+
+## plot Newton
+plot_x = np.arange(min(input_x) - 1, max(input_x) + 1, 0.01)
+Newton_plot_y = funCtion(plot_x, Rlse_ans)
+plt.plot(plot_x, Newton_plot_y, color = 'aqua', label = "Newton")
+plt.scatter(input_x, b, c = "red", label = "TestData")
+plt.legend(loc = 'upper right')
+plt.show()
 
