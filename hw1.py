@@ -20,7 +20,7 @@ def funCtion(x, parameter):
 
 filename = sys.argv[1]
 polynomial_Bases = int(sys.argv[2])
-LambDa = float(sys.argv[2])
+LambDa = float(sys.argv[3])
 
 ## get matrix A & b
 a_matrix = A_MATRIX(filename = filename, polynomial_Bases = polynomial_Bases)
