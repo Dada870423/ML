@@ -8,6 +8,7 @@ import os
 from A_MATRIX import A_MATRIX
 from RLSE import RLSE
 from NEWTON import NEWTON
+from MATRIX_OP import MATRIX_OP
 
 
 def funCtion(x, parameter):
