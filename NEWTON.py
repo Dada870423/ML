@@ -1,11 +1,12 @@
 import numpy as np
-
+from MATRIX_OP import MATRIX_OP
 class NEWTON(object):
     def __init__(self, A, b):
         self.A = A
         self.b = b
 	
     def nEwToN(self, input_x):
+        matop = MATRIX_OP()
         trash, size_A = self.A.shape
 
         x0 = np.random.random_sample((size_A,))
@@ -16,7 +17,8 @@ class NEWTON(object):
 
         while error > 0.001:
         	ATA = (self.A.T @ self.A)
-        	Inv_Hession = np.linalg.inv(2 * ATA)
+        	## Inv_Hession = np.linalg.inv(2 * ATA)
+        	Inv_Hession = matop.iNvErSe(2 * ATA)
         	#print("Inv_Hession", Inv_Hession.shape)
         	#print("x0", x0.shape)
         	ATA_x0 = (ATA @ x0)

@@ -1,5 +1,5 @@
 import numpy as np
-
+from MATRIX_OP import MATRIX_OP
 
 class RLSE(object):
     def __init__(self, A, b, LambDa):
@@ -8,6 +8,8 @@ class RLSE(object):
         self.LambDa = LambDa
 
     def rLsE(self, input_x):
+        matop = MATRIX_OP()
+
         trash, size_A = self.A.shape
 
         ## ATA+lambda I
@@ -16,7 +18,9 @@ class RLSE(object):
         ATA_Lamda_I = ATA + self.LambDa * I
         #print("ATA_Lamda_I", ATA_Lamda_I.shape)
 
-        Inve_ATA_Lamda_I = np.linalg.inv(ATA_Lamda_I)
+        ## Inve_ATA_Lamda_I = np.linalg.inv(ATA_Lamda_I)
+        Inve_ATA_Lamda_I = matop.iNvErSe(ATA_Lamda_I)
+
         #print("Inve_ATA_Lamda_I", Inve_ATA_Lamda_I.shape)
         Inve_ATA_Lamda_I_AT = (Inve_ATA_Lamda_I @ self.A.T)
         #print("Inve_ATA_Lamda_I_AT", Inve_ATA_Lamda_I_AT.shape)
