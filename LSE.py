@@ -1,13 +1,13 @@
 import numpy as np
 from MATRIX_OP import MATRIX_OP
 
-class RLSE(object):
+class LSE(object):
     def __init__(self, A, b, LambDa):
         self.A = A
         self.b = b
         self.LambDa = LambDa
 
-    def rLsE(self, input_x):
+    def LsE(self, input_x):
         matop = MATRIX_OP()
 
         trash, size_A = self.A.shape
@@ -26,11 +26,11 @@ class RLSE(object):
         #print("Inve_ATA_Lamda_I_AT", Inve_ATA_Lamda_I_AT.shape)
         Inve_ATA_Lamda_I_ATb = Inve_ATA_Lamda_I_AT @ self.b
         #print("Inve_ATA_Lamda_I_ATb", Inve_ATA_Lamda_I_ATb.shape)
-        loss = self.rLse_loss(ans = Inve_ATA_Lamda_I_ATb)
+        loss = self.Lse_loss(ans = Inve_ATA_Lamda_I_ATb)
         #print("Inve_ATA_Lamda_I_ATb", Inve_ATA_Lamda_I_ATb)
         return Inve_ATA_Lamda_I_ATb, loss
 
-    def rLse_loss(self, ans):
+    def Lse_loss(self, ans):
         ## x * ans
         ans_vector = self.A @ ans
         return np.sum(np.square(ans_vector - self.b))
