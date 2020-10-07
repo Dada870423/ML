@@ -8,7 +8,6 @@ class A_MATRIX(object):
         self.filename = filename
         self.polynomial_Bases = polynomial_Bases
         self.x , self.y = self.read_file()
-        #self.print_value()
 
     def getA(self):
         pre_A = self.poly_base()
@@ -20,7 +19,6 @@ class A_MATRIX(object):
         return B
 
     def getX(self):
-        #B = np.asarray(self.y, dtype='float')
         return self.x
 
 
@@ -31,13 +29,8 @@ class A_MATRIX(object):
             for iter_j in range(self.polynomial_Bases - 1, -1, -1):
                 tmp.append(self.x[iter_i] ** iter_j)
             A.append(tmp)
-        # print("############", A)
         return A
 
-
-
-    def print_value(self):
-       print(self.polynomial_Bases)
 
     def read_file(self):
         fp = open(self.filename, "r")
