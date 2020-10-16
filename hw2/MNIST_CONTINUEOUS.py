@@ -67,8 +67,6 @@ class MNIST_CONTINUEOUS():
 
     def TRAIN(self, train_label_file, train_image_file):
         Label_fptr, Image_fptr = self.init_data(label_file = train_label_file, image_file = train_image_file)
-        #Label_fptr = open(train_label_file, "rb")
-        #Image_fptr = open(train_image_file, "rb")
         train_case_num = 60000
         for iter_label in range(train_case_num):
             label = self.get_label(Label_fptr)
@@ -96,7 +94,7 @@ class MNIST_CONTINUEOUS():
         #print(self.Mean)
         #print(self.pre_Square)
         #self.Prior = self.Prior / 60000
-        print(Mean[0])
+        print(self.Mean[0])
         self.Prior = self.norm_probability(self.Prior)
         self.trained = True
         return self.Mean, self.Var, self.Prior
@@ -120,8 +118,6 @@ class MNIST_CONTINUEOUS():
         for digit in range(10):
             predict_probability[digit] = predict_probability[digit] + np.log(self.Prior[digit])
             for iter_pixel in range(28 * 28):
-                if self.Var[digit][iter_pixel] == 0:
-                    print(self.Var[digit][iter_pixel])
                 tmp1 = np.log(float(1.0 / math.sqrt(2.0 * math.pi * self.Var[digit][iter_pixel])))
                 tmp2 = float(((test_image[iter_pixel] - self.Mean[digit][iter_pixel]) ** 2) / (2 * self.Var[digit][iter_pixel]))
                 predict_probability[digit] = predict_probability[digit] + tmp1 - tmp2
