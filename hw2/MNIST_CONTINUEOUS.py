@@ -55,13 +55,13 @@ class MNIST_CONTINUEOUS():
 
     def norm_probability(self, probability):
         total = 0.0
-        print(probability)
+        #print(probability)
         for iter_i in range(len(probability)):
             total = total + probability[iter_i]
-        print(probability, "total", total)
+        #print(probability, "total", total)
         for iter_i in range(len(probability)):
             probability[iter_i] = float(float(probability[iter_i]) / float(total))
-        print(probability)
+        #print(probability)
         return probability
 
 
@@ -70,7 +70,7 @@ class MNIST_CONTINUEOUS():
         #Label_fptr = open(train_label_file, "rb")
         #Image_fptr = open(train_image_file, "rb")
         
-        for iter_label in range(60000):
+        for iter_label in range(100):
             label = self.get_label(Label_fptr)
             #print("LL", label)
             self.Prior[label] = self.Prior[label] + 1
@@ -88,7 +88,7 @@ class MNIST_CONTINUEOUS():
                     self.pre_Square[digit][iter_pixel] - (self.Mean[digit][iter_pixel] ** 2)
 
                 if self.Var[digit][iter_pixel] == 0:
-                    self.Var[digit][iter_pixel] = 0.0001
+                    self.Var[digit][iter_pixel] = 0.00001
         
         #print("fuck", self.Prior / 60000)
         #print(self.Mean)
@@ -135,7 +135,14 @@ class MNIST_CONTINUEOUS():
             test_label = self.get_label(Label_fptr)
             #predict_probability = np.zeros((10), dtype = float)
             test_image = self.get_image(ptr = Image_fptr)
-            predict_probability = self.norm_probability(self.cal_probability(test_image = test_image))
+            prepre = self.cal_probability(test_image = test_image)
+
+            #print("before: ", prepre)
+
+            predict_probability = self.norm_probability(prepre)
+            
+            #print("after:", predict_probability)
+
             prediction = np.argmin(predict_probability)
             print("Prediction: ", prediction, ", Ans: ", test_label)
             if prediction != test_label:

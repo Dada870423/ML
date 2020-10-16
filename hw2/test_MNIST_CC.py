@@ -1,7 +1,7 @@
 from MNIST_CONTINUEOUS import MNIST_CONTINUEOUS
-from decimal import *
-print(getcontext())
-Context(prec=28, rounding=ROUND_HALF_EVEN, Emin=-999999, Emax=999999, capitals=1, clamp=0, flags=[], traps=[InvalidOperation, DivisionByZero, Overflow])
+#from decimal import *
+#print(getcontext())
+#Context(prec=28, rounding=ROUND_HALF_EVEN, Emin=-999999, Emax=999999, capitals=1, clamp=0, flags=[], traps=[InvalidOperation, DivisionByZero, Overflow])
 import os
 
 
@@ -9,7 +9,7 @@ MNIST_CC = MNIST_CONTINUEOUS()
 
 MNIST_CC.TRAIN("train-labels-idx1-ubyte", "train-images-idx3-ubyte")
 M, V, P = MNIST_CC.Get_MVP()
-print(P[3])
+#print(P[3])
 
 
 
