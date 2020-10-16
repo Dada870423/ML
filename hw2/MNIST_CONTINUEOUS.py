@@ -70,7 +70,7 @@ class MNIST_CONTINUEOUS():
         #Label_fptr = open(train_label_file, "rb")
         #Image_fptr = open(train_image_file, "rb")
         
-        for iter_label in range(100):
+        for iter_label in range(60000):
             label = self.get_label(Label_fptr)
             #print("LL", label)
             self.Prior[label] = self.Prior[label] + 1
