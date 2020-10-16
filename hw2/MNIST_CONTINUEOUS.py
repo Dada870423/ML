@@ -69,8 +69,8 @@ class MNIST_CONTINUEOUS():
         Label_fptr, Image_fptr = self.init_data(label_file = train_label_file, image_file = train_image_file)
         #Label_fptr = open(train_label_file, "rb")
         #Image_fptr = open(train_image_file, "rb")
-        
-        for iter_label in range(100):
+        train_case_num = 60000
+        for iter_label in range(train_case_num):
             label = self.get_label(Label_fptr)
             #print("LL", label)
             self.Prior[label] = self.Prior[label] + 1
@@ -93,7 +93,9 @@ class MNIST_CONTINUEOUS():
         #print("fuck", self.Prior / 60000)
         #print(self.Mean)
         #print(self.pre_Square)
-        self.Prior = self.norm_probability(self.Prior)
+        for digit in range(10):
+            self.Prior[digit] = float(self.Prior[digit] / self.Prior[digit])
+        #self.Prior = self.norm_probability(self.Prior)
         self.trained = True
         return self.Mean, self.Var, self.Prior
 
@@ -130,7 +132,7 @@ class MNIST_CONTINUEOUS():
     def Test(self, test_label_file, test_image_file):
         Label_fptr, Image_fptr = self.init_data(label_file = test_label_file, image_file = test_image_file)
         Error = 0
-        test_case_num = 2
+        test_case_num = 10000
         for test_case in range(test_case_num):
             test_label = self.get_label(Label_fptr)
             #predict_probability = np.zeros((10), dtype = float)
@@ -151,7 +153,7 @@ class MNIST_CONTINUEOUS():
             print("Posterior (in log scale):")
             for j in range(10):
                 print(j, ": ", predict_probability[j])
-            print("Error rate: ", float(Error / test_case_num))
+            print("Error rate: ", float(Error / test_case))
 
 
     def TTTTTTest(self, M, V, P, test_label_file, test_image_file):
