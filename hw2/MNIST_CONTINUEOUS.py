@@ -76,16 +76,19 @@ class MNIST_CONTINUEOUS():
         
 
         for digit in range(10):
+            print(self.Prior)
             for iter_pixel in range(28 * 28):
                 #Mean = self.Mean[digit][iter_pixel]
                 #pRe_Square = self.pre_Square[digit][iter_pixel]
                 
                 self.Mean[digit][iter_pixel] = \
                     float(self.Mean[digit][iter_pixel] / self.Prior[digit])
-                #self.pre_Square[digit][iter_pixel] = \
-                #    float(self.pre_Square[digit][iter_pixel] / self.Prior[digit])
+                
+                self.pre_Square[digit][iter_pixel] = \
+                    float(self.pre_Square[digit][iter_pixel] / self.Prior[digit])
+                
                 self.Var[digit][iter_pixel] = \
-                    math.sqrt(self.pre_Square[digit][iter_pixel] - (self.Mean[digit][iter_pixel] ** 2))
+                    self.pre_Square[digit][iter_pixel] - (self.Mean[digit][iter_pixel] ** 2)
 
                 if self.Var[digit][iter_pixel] == 0:
                     self.Var[digit][iter_pixel] = 0.00001
@@ -98,6 +101,7 @@ class MNIST_CONTINUEOUS():
         #self.Prior = self.Prior / 60000
         #print(self.Mean[0])
         self.Prior = self.norm_probability(self.Prior)
+        print("norm_print(self.Prior)", self.Prior)
         self.trained = True
         return self.Mean, self.Var, self.Prior
 
@@ -118,7 +122,7 @@ class MNIST_CONTINUEOUS():
     def cal_probability(self, test_image):
         predict_probability = np.zeros((10), dtype = float)
         for digit in range(10):
-            predict_probability[digit] = predict_probability[digit] + np.log(self.Prior[digit])
+            predict_probability[digit] = self.Prior[digit]
             for iter_pixel in range(28 * 28):
                 tmp1 = np.log(float(1.0 / math.sqrt(2.0 * math.pi * self.Var[digit][iter_pixel])))
                 tmp2 = float(((test_image[iter_pixel] - self.Mean[digit][iter_pixel]) ** 2) / (2 * self.Var[digit][iter_pixel]))
@@ -149,7 +153,6 @@ class MNIST_CONTINUEOUS():
             print("Prediction: ", prediction, ", Ans: ", test_label)
             if prediction != test_label:
                 Error = Error + 1
-        
             print("Posterior (in log scale):")
             for j in range(10):
                 print(j, ": ", predict_probability[j])
@@ -162,19 +165,19 @@ class MNIST_CONTINUEOUS():
 
         for test_case in range(1):
             test_label = self.get_label(Label_fptr)
-            print(test_label)
+            #print(test_label)
             #predict_probability = np.zeros((10), dtype = float)
             test_image = self.get_image(ptr = Image_fptr)
             predict_probability = self.norm_probability(self.cal_probability(test_image = test_image))
             prediction = np.argmin(predict_probability)
-            print("Prediction: ", prediction, ", Ans: ", test_label)
+            #print("Prediction: ", prediction, ", Ans: ", test_label)
             if prediction != test_label:
                 Error = Error + 1
         
-        print("Posterior (in log scale):")
-        for j in range(10):
-            print(j, ": ", predict_probability[j])
-        print("Error rate: ", float(Error / 10000))
+        #print("Posterior (in log scale):")
+        #for j in range(10):
+        #    print(j, ": ", predict_probability[j])
+        #print("Error rate: ", float(Error / 10000))
 
 
 
