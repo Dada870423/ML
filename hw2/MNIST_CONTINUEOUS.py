@@ -123,10 +123,13 @@ class MNIST_CONTINUEOUS():
         predict_probability = np.zeros((10), dtype = float)
         for digit in range(10):
             predict_probability[digit] = self.Prior[digit]
+            print(self.Prior[digit])
             for iter_pixel in range(28 * 28):
                 tmp1 = np.log(float(1.0 / math.sqrt(2.0 * math.pi * self.Var[digit][iter_pixel])))
                 tmp2 = float(((test_image[iter_pixel] - self.Mean[digit][iter_pixel]) ** 2) / (2 * self.Var[digit][iter_pixel]))
                 predict_probability[digit] = predict_probability[digit] + tmp1 - tmp2
+                print("tmp1", tmp1)
+                print("tmp2", tmp2)
         return predict_probability
 
 
@@ -136,7 +139,7 @@ class MNIST_CONTINUEOUS():
     def Test(self, test_label_file, test_image_file):
         Label_fptr, Image_fptr = self.init_data(label_file = test_label_file, image_file = test_image_file)
         Error = 0
-        test_case_num = 10000
+        test_case_num = 1
         for test_case in range(test_case_num):
             test_label = self.get_label(Label_fptr)
             #predict_probability = np.zeros((10), dtype = float)
