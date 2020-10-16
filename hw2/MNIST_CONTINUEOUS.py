@@ -95,9 +95,9 @@ class MNIST_CONTINUEOUS():
         #print("fuck", self.Prior / 60000)
         #print(self.Mean)
         #print(self.pre_Square)
-        for digit in range(10):
-            self.Prior[digit] = float(self.Prior[digit] / self.Prior[digit])
-        #self.Prior = self.norm_probability(self.Prior)
+        #self.Prior = self.Prior / 60000
+        print(Mean[0])
+        self.Prior = self.norm_probability(self.Prior)
         self.trained = True
         return self.Mean, self.Var, self.Prior
 
