@@ -77,11 +77,13 @@ class MNIST_CONTINUEOUS():
 
         for digit in range(10):
             for iter_pixel in range(28 * 28):
-                Mean = self.Mean[digit][iter_pixel]
-                pRe_Square = self.pre_Square[digit][iter_pixel]
+                #Mean = self.Mean[digit][iter_pixel]
+                #pRe_Square = self.pre_Square[digit][iter_pixel]
                 
-                self.Mean[digit][iter_pixel] = float(Mean / self.Prior[digit])
-                self.pre_Square[digit][iter_pixel] = float(pRe_Square / self.Prior[digit])
+                self.Mean[digit][iter_pixel] = \
+                    float(self.Mean[digit][iter_pixel] / self.Prior[digit])
+                #self.pre_Square[digit][iter_pixel] = \
+                #    float(self.pre_Square[digit][iter_pixel] / self.Prior[digit])
                 self.Var[digit][iter_pixel] = \
                     self.pre_Square[digit][iter_pixel] - (self.Mean[digit][iter_pixel] ** 2)
 
@@ -94,7 +96,7 @@ class MNIST_CONTINUEOUS():
         #print(self.Mean)
         #print(self.pre_Square)
         #self.Prior = self.Prior / 60000
-        print(self.Mean[0])
+        #print(self.Mean[0])
         self.Prior = self.norm_probability(self.Prior)
         self.trained = True
         return self.Mean, self.Var, self.Prior
