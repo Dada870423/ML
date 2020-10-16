@@ -89,6 +89,8 @@ class MNIST_CONTINUEOUS():
 
                 if self.Var[digit][iter_pixel] == 0:
                     self.Var[digit][iter_pixel] = 0.00001
+                elif self.Var[digit][iter_pixel] < 0:
+                    self.Var[digit][iter_pixel] = -(self.Var[digit][iter_pixel])
         
         #print("fuck", self.Prior / 60000)
         #print(self.Mean)
@@ -153,7 +155,7 @@ class MNIST_CONTINUEOUS():
             print("Posterior (in log scale):")
             for j in range(10):
                 print(j, ": ", predict_probability[j])
-            print("Error rate: ", float(Error / test_case + 1))
+            print("Error rate: ", float(Error / (test_case + 1)))
 
 
     def TTTTTTest(self, M, V, P, test_label_file, test_image_file):
