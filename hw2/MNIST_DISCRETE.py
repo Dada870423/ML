@@ -90,7 +90,7 @@ class MNIST_DISCRETE():
         predict_probability = np.zeros((10), dtype = float)
         #print(Frequency_sum[1])
         for digit in range(10):
-        	predict_probability[digit] = np.(self.Prior[digit])
+        	predict_probability[digit] = np.log(self.Prior[digit])
         	for iter_pixel in range(28 * 28):
         		if self.Frequency[digit][iter_pixel][int(test_image[iter_pixel])] == 0:
         			predict_probability[digit] += \
