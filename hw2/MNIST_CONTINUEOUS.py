@@ -85,7 +85,7 @@ class MNIST_CONTINUEOUS():
                 #self.pre_Square[digit][iter_pixel] = \
                 #    float(self.pre_Square[digit][iter_pixel] / self.Prior[digit])
                 self.Var[digit][iter_pixel] = \
-                    self.pre_Square[digit][iter_pixel] - (self.Mean[digit][iter_pixel] ** 2) * self.Prior[digit]
+                    math.sqrt(self.pre_Square[digit][iter_pixel] - (self.Mean[digit][iter_pixel] ** 2))
 
                 if self.Var[digit][iter_pixel] == 0:
                     self.Var[digit][iter_pixel] = 0.00001
