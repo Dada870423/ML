@@ -6,6 +6,7 @@ class MNIST_DISCRETE():
     def __init__(self):
         self.Prior = np.zeros((10), dtype = float) ## Just count it!!
         self.Frequency = np.zeros((10, 28 * 28, 32), dtype = int)
+        self.final_image = np.zeros((10, 28 * 28), dtype = int)
         self.trained = False
 
     def init_data(self, label_file, image_file):
@@ -44,7 +45,7 @@ class MNIST_DISCRETE():
 
     def TRAIN(self, train_label_file, train_image_file):
         Label_fptr, Image_fptr = self.init_data(label_file = train_label_file, image_file = train_image_file)
-        train_case_num = 100
+        train_case_num = 60000
 
         for iter_label in range(train_case_num):
             label = self.get_label(Label_fptr)
@@ -53,6 +54,9 @@ class MNIST_DISCRETE():
 
         self.Prior = self.norm_probability(self.Prior)
         print(self.Prior)
+        print(np.sum(self.Frequency[0][478][16:32]))
+        print(np.sum(self.Frequency[0][478][:16]))
+        print(self.Frequency[0][478])
         self.trained = True
         return self.Prior
 
@@ -78,6 +82,30 @@ class MNIST_DISCRETE():
         		Frequency_sum[digit][iter_pixel] = np.sum(self.Frequency[digit][iter_pixel])
 
         return Frequency_sum
+
+    def cal_final_image(self):
+        for digit in range(10):
+            for iter_pixel in range(28 * 28):
+                is_1 = np.sum(self.Frequency[digit][iter_pixel][16:32])
+                is_0 = np.sum(self.Frequency[digit][iter_pixel][:16])
+                if is_1 > is_0:
+                    self.final_image[digit][iter_pixel] = 1
+                else:
+                    self.final_image[digit][iter_pixel] = 0
+
+
+    def print_fre(self):
+        for iter_pixel in range(28 * 28):
+            print(self.Frequency[0][iter_pixel])
+
+
+    def Print_digit(self, label):
+        print("label", label)
+        for pixel_y in range(28):
+            for pixel_x in range(28):
+                print(self.final_image[label][28 * pixel_y + pixel_x], " ", end = "")
+            print("")
+        print("\n\n\n")
 
     def get_image(self, ptr):
         image = np.zeros((28 * 28), dtype = float)
@@ -112,7 +140,7 @@ class MNIST_DISCRETE():
     def Test(self, test_label_file, test_image_file):
         Label_fptr, Image_fptr = self.init_data(label_file = test_label_file, image_file = test_image_file)
         Error = 0
-        test_case_num = 10
+        test_case_num = 10000
         Frequency_sum = self.cal_image_sum()
 
         for test_case in range(test_case_num):

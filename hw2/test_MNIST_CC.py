@@ -39,5 +39,5 @@ M, V, P = MNIST_CC.Get_MVP()
 
 MNIST_CC.Test(test_label_file = "t10k-labels-idx1-ubyte", test_image_file = "t10k-images-idx3-ubyte")
 
-
-
+for label in range(10):
+    MNIST_CC.Print_digit(label = label)

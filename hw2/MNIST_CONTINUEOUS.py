@@ -183,6 +183,13 @@ class MNIST_CONTINUEOUS():
         #print("Error rate: ", float(Error / 10000))
 
 
+    def Print_digit(self, label):
+        print("label", label)
+        for pixel_y in range(28):
+            for pixel_x in range(28):
+                print(int(self.Mean[label][28 * pixel_y + pixel_x] > 128), " ", end = "")
+            print("")
+        print("\n\n\n")
 
 
 
