@@ -53,11 +53,8 @@ class MNIST_DISCRETE():
             self.image_process(label = label, Image_fptr = Image_fptr)
 
         self.Prior = self.norm_probability(self.Prior)
-        print(self.Prior)
-        print(np.sum(self.Frequency[0][478][16:32]))
-        print(np.sum(self.Frequency[0][478][:16]))
-        print(self.Frequency[0][478])
         self.trained = True
+        self.cal_final_image()
         return self.Prior
 
 

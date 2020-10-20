@@ -68,11 +68,13 @@ class MNIST_CONTINUEOUS():
     def TRAIN(self, train_label_file, train_image_file):
         Label_fptr, Image_fptr = self.init_data(label_file = train_label_file, image_file = train_image_file)
         train_case_num = 60000
+        self.printProgress(0, 100, prefix="training:", suffix="Complete", barLength=50)
         for iter_label in range(train_case_num):
             label = self.get_label(Label_fptr)
             #print("LL", label)
             self.Prior[label] = self.Prior[label] + 1
             self.image_process(label = label, Image_fptr = Image_fptr)
+            self.printProgress(int(iter_label/600), 100, prefix="training: ", suffix="Complete", barLength=50)
         
 
         for digit in range(10):
@@ -181,6 +183,18 @@ class MNIST_CONTINUEOUS():
         #for j in range(10):
         #    print(j, ": ", predict_probability[j])
         #print("Error rate: ", float(Error / 10000))
+
+    def printProgress(self, iteration, total, prefix='', suffix='', decimals=1, barLength=100):
+        formatStr = "{0:." + str(decimals) + "f}"
+        percent = formatStr.format(100 * (iteration / float(total)))
+        filledLength = int(round(barLength * iteration / float(total)))
+        bar = '#' * filledLength + '-' * (barLength - filledLength)
+        sys.stdout.write('\r%s |%s| %s%s %s' % (prefix, bar, percent, '%', suffix)),
+        if iteration == total:
+            sys.stdout.write('\n')
+        sys.stdout.flush()
+
+
 
 
     def Print_digit(self, label):
