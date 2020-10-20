@@ -70,7 +70,7 @@ class MNIST_CONTINUEOUS():
         train_case_num = 60000
         self.printProgress(0, 100, prefix="training:", suffix="Complete", barLength=50)
         for iter_label in range(train_case_num):
-            label = self.get_label(Label_fptr)
+            label = self.get_label(fptr = Label_fptr)
             #print("LL", label)
             self.Prior[label] = self.Prior[label] + 1
             self.image_process(label = label, Image_fptr = Image_fptr)
@@ -143,7 +143,7 @@ class MNIST_CONTINUEOUS():
         Error = 0
         test_case_num = 10000
         for test_case in range(test_case_num):
-            test_label = self.get_label(Label_fptr)
+            test_label = self.get_label(fptr = Label_fptr)
             #predict_probability = np.zeros((10), dtype = float)
             test_image = self.get_image(ptr = Image_fptr)
             prepre = self.cal_probability(test_image = test_image)
@@ -164,25 +164,6 @@ class MNIST_CONTINUEOUS():
             print("Error rate: ", float(Error / (test_case + 1)))
 
 
-    def TTTTTTest(self, M, V, P, test_label_file, test_image_file):
-        Label_fptr, Image_fptr = self.init_data(label_file = test_label_file, image_file = test_image_file)
-        Error = 0
-
-        for test_case in range(1):
-            test_label = self.get_label(Label_fptr)
-            #print(test_label)
-            #predict_probability = np.zeros((10), dtype = float)
-            test_image = self.get_image(ptr = Image_fptr)
-            predict_probability = self.norm_probability(self.cal_probability(test_image = test_image))
-            prediction = np.argmin(predict_probability)
-            #print("Prediction: ", prediction, ", Ans: ", test_label)
-            if prediction != test_label:
-                Error = Error + 1
-        
-        #print("Posterior (in log scale):")
-        #for j in range(10):
-        #    print(j, ": ", predict_probability[j])
-        #print("Error rate: ", float(Error / 10000))
 
     def printProgress(self, iteration, total, prefix='', suffix='', decimals=1, barLength=100):
         formatStr = "{0:." + str(decimals) + "f}"

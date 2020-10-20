@@ -54,7 +54,7 @@ class MNIST_DISCRETE():
 
         self.Prior = self.norm_probability(self.Prior)
         self.trained = True
-        self.cal_final_image()
+        #self.cal_final_image()
         return self.Prior
 
 
@@ -100,7 +100,8 @@ class MNIST_DISCRETE():
         print("label", label)
         for pixel_y in range(28):
             for pixel_x in range(28):
-                print(self.final_image[label][28 * pixel_y + pixel_x], " ", end = "")
+                print(int(np.sum(self.Frequency[digit][28 * pixel_y + pixel_x][16:32]) \
+                         >= np.sum(self.Frequency[digit][iter_pixel][:16])), " ", end = "")
             print("")
         print("\n\n\n")
 
