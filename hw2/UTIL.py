@@ -19,11 +19,8 @@ def init_data(label_file, image_file):
     return Label_fptr, Image_fptr
 
 
-
-
 def get_label(fptr):
     label = int.from_bytes(fptr.read(1), byteorder = 'big')
-    #print(label)
     return label
 
 
@@ -40,8 +37,6 @@ def norm_probability(probability):
     return probability
 
 
-
-
 def printProgress(iteration, total, prefix = "", suffix = "", decimals=1, barLength=100):
     formatStr = "{0:." + str(decimals) + "f}"
     percent = formatStr.format(100 * (iteration / float(total)))
@@ -49,9 +44,16 @@ def printProgress(iteration, total, prefix = "", suffix = "", decimals=1, barLen
     bar = '#' * filledLength + '-' * (barLength - filledLength)
     sys.stdout.write('\r%s |%s| %s%s %s' % (prefix, bar, percent, '%', suffix)),
     if iteration == total:
-        sys.stdout.write('\n')
+        sys.stdout.write("\n")
+        sys.stdout.write("\n")
+        sys.stdout.write("\n")
     sys.stdout.flush()
 
-
-
+def compare(predict_probability, Ans, fptr):
+	prediction = np.argmin(predict_probability)
+	fptr.write("\nPrediction: " + str(prediction) + ", Ans: " + str(Ans))
+	fptr.write("\nPosterior (in log scale):")
+	for digit in range(10):
+		fptr.write(str(digit) + ": " + str(predict_probability[digit]) + "\n")
+	return int(prediction != Ans)
 

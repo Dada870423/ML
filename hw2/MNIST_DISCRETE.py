@@ -91,10 +91,6 @@ class MNIST_DISCRETE():
                     self.final_image[digit][iter_pixel] = 0
 
 
-    def print_fre(self):
-        for iter_pixel in range(28 * 28):
-            print(self.Frequency[0][iter_pixel])
-
 
     def Print_digit(self, label):
         print("label", label)
@@ -133,20 +129,19 @@ class MNIST_DISCRETE():
         Error = 0
         test_case_num = 10000
         Frequency_sum = self.cal_image_sum()
+        ErrorRate_fptr = open('MNIST_DISCRETE_ErrorRate.txt', 'w')
 
+
+        printProgress(0, 100, prefix="testing:", suffix="Complete", barLength=50)
         for test_case in range(test_case_num):
             test_label = get_label(fptr = Label_fptr)
             test_image = self.get_image(ptr = Image_fptr)
             prepre = self.cal_probability(test_image = test_image, Frequency_sum = Frequency_sum)
             predict_probability = norm_probability(probability = prepre)
-            prediction = np.argmin(predict_probability)
-            print("Prediction: ", prediction, ", Ans: ", test_label)
-            if prediction != test_label:
-                Error = Error + 1
-        
-            print("Posterior (in log scale):")
-            for j in range(10):
-                print(j, ": ", predict_probability[j])
-            print("Error rate: ", float(Error / (test_case + 1)))
+
+            Error = Error + compare(predict_probability = predict_probability, Ans = test_label, fptr = ErrorRate_fptr)
+            ErrorRate_fptr.write("Error rate: " + str(float(Error / (test_case + 1))))
+            printProgress(int(test_case / 100), 100, prefix="testing:", suffix="Complete", barLength=50)
+        ErrorRate_fptr.close()
 
 
