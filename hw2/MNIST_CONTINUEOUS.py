@@ -31,7 +31,7 @@ class MNIST_CONTINUEOUS():
         
 
         for digit in range(10):
-            print(self.Prior)
+            #print(self.Prior)
             for iter_pixel in range(28 * 28):
                 
                 self.Mean[digit][iter_pixel] = \
@@ -49,7 +49,7 @@ class MNIST_CONTINUEOUS():
                     self.Var[digit][iter_pixel] = -(self.Var[digit][iter_pixel])
         
         self.Prior = norm_probability(probability = self.Prior)
-        print("norm_print(self.Prior)", self.Prior)
+        #print("norm_print(self.Prior)", self.Prior)
         self.trained = True
         return self.Mean, self.Var, self.Prior
 
