@@ -1,4 +1,5 @@
 from MNIST_CONTINUEOUS import MNIST_CONTINUEOUS
+from MNIST_DISCRETE import MNIST_DISCRETE
 import os
 
 CD_mode = input("Continuous or Discrete ?????, your choice is : ")
