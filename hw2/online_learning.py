@@ -6,9 +6,6 @@ class online_learning():
     def __init__(self):
         self.read = False
         self.case = 0
-    #    self.train_label_file = train_label_file
-    #    self.test_image_file = test_image_file
-    #    self.test_label_file = test_label_file
 
 
     def read_file(self, file):
