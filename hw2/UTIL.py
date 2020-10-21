@@ -45,8 +45,6 @@ def printProgress(iteration, total, prefix = "", suffix = "", decimals=1, barLen
     sys.stdout.write('\r%s |%s| %s%s %s' % (prefix, bar, percent, '%', suffix)),
     if iteration == total:
         sys.stdout.write("\n")
-        sys.stdout.write("\n")
-        sys.stdout.write("\n")
     sys.stdout.flush()
 
 def compare(predict_probability, Ans, fptr):

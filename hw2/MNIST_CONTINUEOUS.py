@@ -27,7 +27,7 @@ class MNIST_CONTINUEOUS():
             label = get_label(fptr = Label_fptr)
             self.Prior[label] = self.Prior[label] + 1
             self.image_process(label = label, Image_fptr = Image_fptr)
-            printProgress(int(iter_label/600), 100, prefix="training: ", suffix="Complete", barLength=50)
+            printProgress(int((iter_label + 1)/600), 100, prefix="training: ", suffix="Complete", barLength=50)
         
 
         for digit in range(10):
@@ -44,7 +44,7 @@ class MNIST_CONTINUEOUS():
                     self.pre_Square[digit][iter_pixel] - (self.Mean[digit][iter_pixel] ** 2)
 
                 if self.Var[digit][iter_pixel] == 0:
-                    self.Var[digit][iter_pixel] = 0.05
+                    self.Var[digit][iter_pixel] = 10000
                 elif self.Var[digit][iter_pixel] < 0:
                     self.Var[digit][iter_pixel] = -(self.Var[digit][iter_pixel])
         
@@ -104,7 +104,7 @@ class MNIST_CONTINUEOUS():
             
             Error = Error + compare(predict_probability = predict_probability, Ans = test_label, fptr = ErrorRate_fptr)
             ErrorRate_fptr.write("Error rate: " + str(float(Error / (test_case + 1))))
-            printProgress(int(test_case / 100), 100, prefix="testing:", suffix="Complete", barLength=50)
+            printProgress(int((test_case + 1)/ 100), 100, prefix="testing:", suffix="Complete", barLength=50)
         ErrorRate_fptr.close()
 
 
