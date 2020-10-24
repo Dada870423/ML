@@ -19,7 +19,7 @@ if "p" in mode or "P" in mode:
         samples.append(y)
     
     plt.hist(samples, 50)
-    plt.title("basis:{},a:{}".format(2, 10))
+    plt.title("basis: " + str(basis) + " , a: " + str(a) + " , w: " + str(w))
 else:
     print("Univariate gaussian")
     mean = int(input("mean : "))
