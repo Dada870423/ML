@@ -52,19 +52,24 @@ A = poly_base(input_x = X, basis = basis, A = A)
 #
 #print(CovarianceMatrix)
 #print(mEaN)
-mean=np.zeros((basis))
+
+#mean=np.zeros((basis))
 
 
-S = np.linalg.pinv(variance)
+
 
 variance = np.linalg.inv(a * (A.T @ A) + BI)
-
+S = np.linalg.pinv(variance)
 #print(np.shape(variance_new))
 #print(np.shape(X.T))
 
 mean = a * (variance @ A.T @ Y)
 
-
+print(X, Y)
+print(A)
+print(S)
+print(variance)
+print(mean)
 
 
 ## iter 2
@@ -78,22 +83,27 @@ for i in range(1, 1000):
         print(A)
         print(X, Y)
 
-    S = np.linalg.pinv(variance)
-    variance_new = copy.deepcopy(np.linalg.inv(a * (A.T @ A) + S))
+    variance = (a * (A.T @ A)) + S
+    inv_CovarianceMatrix = np.linalg.inv(variance)
+    mean_new = inv_CovarianceMatrix @ (a * A.T @ Y + S @ mean)
 
-    print(np.shape(mean))
-    print(variance_new)
-    mean_new = copy.deepcopy(variance_new @ ((a * (A.T @ Y)) + (S @ mean)))
+    S = np.linalg.pinv(variance)
+
+    #variance_new = copy.deepcopy(np.linalg.inv(a * (A.T @ A) + S))
+
+    #print(np.shape(mean))
+
+    #mean_new = copy.deepcopy(variance_new @ ((a * (A.T @ Y)) + (S @ mean)))
 
     print('Posterior mean:')
     print(mean_new)
     print()
     print('Posterior variance:')
-    
+    print(variance)
     print()
 
     mean = copy.deepcopy(mean_new)
-    variance = copy.deepcopy(variance_new)
+    #variance = copy.deepcopy(variance_new)
 
 #    CovarianceMatrix = a * (A.T @ A) + inv_CovarianceMatrix_S
 #    inv_CovarianceMatrix = np.linalg.pinv(CovarianceMatrix)
