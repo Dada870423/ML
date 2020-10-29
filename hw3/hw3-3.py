@@ -28,7 +28,11 @@ for base in range(basis):
 II = np.identity(basis)
 BI = II * b
 
-print(BI)
+S = copy.deepcopy(BI)
+
+inv_S = np.linalg.inv(BI)
+
+variance = copy.deepcopy(inv_S)
 
 
 variance=(1/b)*np.identity(basis)
@@ -56,14 +60,25 @@ A = poly_base(input_x = X, basis = basis, A = A)
 #mean=np.zeros((basis))
 
 
+tri = a * (A.T @ A) + S
+
+inv_tri = np.linalg.inv(tri)
+
+mean = a * (inv_tri @ A.T @ Y)
+variance = inv_tri
+
+M_pron = copy.deepcopy(mean)
+
+S_pron = tri
 
 
-variance = np.linalg.inv(a * (A.T @ A) + BI)
-S = np.linalg.pinv(variance)
+
+#variance = np.linalg.inv(a * (A.T @ A) + BI)
+#S = np.linalg.pinv(variance)
 #print(np.shape(variance_new))
 #print(np.shape(X.T))
 
-mean = a * (variance @ A.T @ Y)
+#mean = a * (variance @ A.T @ Y)
 
 print(X, Y)
 print(A)
@@ -83,11 +98,30 @@ for i in range(1, 1000):
         print(A)
         print(X, Y)
 
-    variance = (a * (A.T @ A)) + S
-    inv_CovarianceMatrix = np.linalg.inv(variance)
-    mean_new = inv_CovarianceMatrix @ (a * A.T @ Y + S @ mean)
 
-    S = np.linalg.pinv(variance)
+
+    tir = a * (A.T @ A) + S_pron
+    inv_tri = np.linalg.inv(tri)
+
+    mean_pre = inv_tri @ (a * A.T @ Y + S_pron @ M_pron)
+    variance = A.T @ inv_tri @ A
+
+    mean = mean_pre.T @ A.T
+
+
+
+    M_pron = copy.deepcopy(mean)
+    S_pron = np.linalg.inv(variance)
+
+
+
+
+
+#    variance_new = (a * (A.T @ A)) + S
+#    inv_CovarianceMatrix = np.linalg.inv(variance)
+#    mean_new = inv_CovarianceMatrix @ (a * A.T @ Y + variance @ mean)
+#
+#    S = np.linalg.pinv(variance)
 
     #variance_new = copy.deepcopy(np.linalg.inv(a * (A.T @ A) + S))
 
@@ -96,13 +130,13 @@ for i in range(1, 1000):
     #mean_new = copy.deepcopy(variance_new @ ((a * (A.T @ Y)) + (S @ mean)))
 
     print('Posterior mean:')
-    print(mean_new)
+    print(mean)
     print()
     print('Posterior variance:')
     print(variance)
     print()
 
-    mean = copy.deepcopy(mean_new)
+    #mean = copy.deepcopy(mean_new)
     #variance = copy.deepcopy(variance_new)
 
 #    CovarianceMatrix = a * (A.T @ A) + inv_CovarianceMatrix_S
