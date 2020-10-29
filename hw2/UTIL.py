@@ -48,10 +48,10 @@ def printProgress(iteration, total, prefix = "", suffix = "", decimals=1, barLen
     sys.stdout.flush()
 
 def compare(predict_probability, Ans, fptr):
-	prediction = np.argmin(predict_probability)
-	fptr.write("\nPrediction: " + str(prediction) + ", Ans: " + str(Ans))
-	fptr.write("\nPosterior (in log scale):")
-	for digit in range(10):
-		fptr.write(str(digit) + ": " + str(predict_probability[digit]) + "\n")
-	return int(prediction != Ans)
+    prediction = np.argmin(predict_probability)
+    fptr.write("\nPrediction: " + str(prediction) + ", Ans: " + str(Ans))
+    fptr.write("\nPosterior (in log scale):")
+    for digit in range(10):
+        fptr.write(str(digit) + ": " + str(predict_probability[digit]) + "\n")
+    return int(prediction != Ans)
 

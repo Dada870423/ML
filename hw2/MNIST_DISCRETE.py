@@ -110,14 +110,14 @@ class MNIST_DISCRETE():
     def cal_probability(self, test_image, Frequency_sum):
         predict_probability = np.zeros((10), dtype = float)
         for digit in range(10):
-        	predict_probability[digit] = np.log(self.Prior[digit])
-        	for iter_pixel in range(28 * 28):
-        		if self.Frequency[digit][iter_pixel][int(test_image[iter_pixel])] == 0:
-        			predict_probability[digit] += \
-        				np.log(float(0.00001 / Frequency_sum[digit][iter_pixel]))
-        		else:
-        			predict_probability[digit] += \
-        				np.log(float(float(self.Frequency[digit][iter_pixel][int(test_image[iter_pixel])]) / float(Frequency_sum[digit][iter_pixel])))
+            predict_probability[digit] = np.log(self.Prior[digit])
+            for iter_pixel in range(28 * 28):
+                if self.Frequency[digit][iter_pixel][int(test_image[iter_pixel])] == 0:
+                    predict_probability[digit] += \
+                        np.log(float(0.00001 / Frequency_sum[digit][iter_pixel]))
+            	else:
+                    predict_probability[digit] += \
+                        np.log(float(float(self.Frequency[digit][iter_pixel][int(test_image[iter_pixel])]) / float(Frequency_sum[digit][iter_pixel])))
 
         return predict_probability
 
