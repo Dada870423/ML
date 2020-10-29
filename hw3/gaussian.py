@@ -19,17 +19,17 @@ def Univariate_generator(mean, varinance):
 
 
 def Poly_generator(basis, a, w):
-	E = Univariate_generator(mean = 0, varinance = a)
-	para_x = random.uniform(-1, 1)
-	x_vector = [math.pow(para_x, base) for base in range(basis)]
-	poly_functino = 0
-	for base in range(basis):
-		poly_functino = x_vector[base] * w[base]
+    E = Univariate_generator(mean = 0, varinance = a)
+    para_x = random.uniform(-1, 1)
+    x_vector = [math.pow(para_x, base) for base in range(basis)]
+    poly_functino = 0
+    for base in range(basis):
+    	poly_functino = x_vector[base] * w[base]
 
-	#x_vector * w
-	y = np.sum(poly_functino) + E
+    #x_vector * w
+    y = np.sum(poly_functino) + E
 
-	return para_x, y
+    return para_x, y
 
 
 
