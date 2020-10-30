@@ -2,26 +2,50 @@ from gaussian import *
 import numpy as np
 import copy
 
+def funCtion(x, parameter):
+    lead = len(parameter)
+    y = 0
+    for iter_i in range(len(parameter) - 1, -1, -1):
+        tmp = x ** iter_i
+        #y = y + tmp * parameter[len(parameter) - iter_i - 1]
+        y = y + tmp * parameter[iter_i]
+    return y
 
-def poly_base(input_x, basis):
-    tmp = np.zeros(basis)
-    for iter_j in range(basis - 1, -1, -1):
-        tmp[iter_j] = input_x ** iter_j
 
-    return tmp
+def ploting(Ground_truth, Predict_result, Sample_X, Sample_Y, Incomes_m_10, Incomes_m_50):
+    plot_x = np.arange(-1.5, 1.5, 0.01)
+    
+    ## Ground_truth
+    Ground_truth_plot_y = funCtion(plot_x, Ground_truth)
+    plt.subplot(221)
+    plt.plot(plot_x, Ground_truth_plot_y, color = "black", label = "w")
+    plt.title("Ground truth")
+    plt.legend(loc = 'upper right')
 
-def poly_basis_generator(n, W, a):
-    """
-    W: (n, 1)
-    """
-    W = np.array(W).reshape(1, -1)
-    x = np.random.uniform(low=-1.0, high=1.0)
-    A = np.array([x ** i for i in range(n)])
-    return x, W.dot(A)[0] + uni_gaussian_generator(0, a)
+    ## Predict_result
+    Predict_result_plot_y = funCtion(plot_x, Predict_result)
+    plt.subplot(222)
+    plt.plot(plot_x, Predict_result_plot_y, color = "black", label = "Posterior mean")
+    plt.scatter(Sample_X, Sample_Y, c = "aqua", label = "Sample", marker = "x")
+    plt.title("Predict result")
+    plt.legend(loc = 'upper right')
+    
+    ## After 10 incomes
+    Incomes_10_plot_y = funCtion(plot_x, Incomes_m_10)
+    plt.subplot(223)
+    plt.plot(plot_x, Incomes_10_plot_y, color = "black", label = "Posterior mean")
+    plt.scatter(Sample_X[:10], Sample_Y[:10], c = "aqua", label = "10 Samples", marker = "x")
+    plt.title("After 10 incomes")
+    plt.legend(loc = 'upper right')
 
-def uni_gaussian_generator(mean, variance):
-    normal = np.random.uniform(size=12).sum() - 6
-    return normal * np.sqrt(variance) + mean
+    ## After 50 incomes
+    Incomes_50_plot_y = funCtion(plot_x, Incomes_m_50)
+    plt.subplot(224)
+    plt.plot(plot_x, Incomes_50_plot_y, color = "black", label = "Posterior mean")
+    plt.scatter(Sample_X[:50], Sample_Y[:50], c = "aqua", label = "50 Samples", marker = "x")
+    plt.title("After 50 incomes")
+    plt.legend(loc = 'upper right')
+    plt.show()
 
 
 b = int(input("b : "))
@@ -34,86 +58,47 @@ for base in range(basis):
     w_input = int(input("W" + str(base) + " : "))
     w.append(w_input)
 
-II = np.identity(basis)
-#BI = II * b
-print(w)
 
-#prior_m = np.zeros(basis, dtype = float)
 prior_m = np.zeros((basis, 1))
 prior_S = np.identity(basis) * b
-#prior_S = II * b
+
+X_set = np.zeros(0)
+Y_set = np.zeros(0)
 
 
-
-#mEaN = np.zeros(basis, dtype = float)
-#A = np.zeros(0)
-X = np.zeros(0)
-Y = np.zeros(0)
-
-## iter 1
-
-#print(A)
-#CovarianceMatrix = a * (A.T @ A) + BI
-#inv_CovarianceMatrix_S = np.linalg.pinv(CovarianceMatrix)
-#
-#mEaN = a * (inv_CovarianceMatrix_S @ A.T @ Y)
-#
-#print(CovarianceMatrix)
-#print(mEaN)
-
-#mean=np.zeros((basis))
-
-
-#inv_posterior_S = prior_S + (1 / a)  * A.T @ A
-#posterior_S = np.linalg.inv(inv_posterior_S)
-#
-#posterior_m = (posterior_S @ prior_S @ prior_m) + (1 / a) * A.T * para_y
-#
-#prior_m = posterior_m
-#prior_S = inv_posterior_S
-
-## iter 2
 cnt = 0
-for i in range(1, 5000):
+for iter_i in range(1, 5000):
     cnt = cnt + 1
-    #para_x, para_y = Poly_generator(basis = basis, a = a, w = w)
-    para_x, para_y = poly_basis_generator(n = basis, W = w, a = a)
+    para_x, para_y = Poly_generator(basis = basis, a = a, w = w)
     print(para_x, para_y)
-    #X = np.append(X, para_x)
-    #Y = np.append(Y, para_y)
-    #A = poly_base(input_x = para_x, basis = basis)
-    X = np.array([[para_x ** j for j in range(args.n)]])
-    #print(A)
+    X_set = np.append(X_set, para_x)
+    Y_set = np.append(Y_set, para_y)
+    X = np.array([[para_x ** base for base in range(basis)]])
+
+    if iter_i == 9:
+        incomes_m_10 = prior_m
+        incomes_S_10 = prior_S
+    elif iter_i == 49:
+        incomes_m_50 = prior_m
+        incomes_S_50 = prior_S
 
 
 
 
-    #inv_posterior_S = prior_S + (1 / a) * A.T @ A
-    inv_posterior_S = prior_S + (1 / args.a) * X.T.dot(X)
+    inv_posterior_S = prior_S + (1 / a) * X.T @ X
+
+
     posterior_S = np.linalg.inv(inv_posterior_S)
-    
-    #posterior_m = posterior_S @ ((prior_S @ prior_m) + (1 / a) * A.T * para_y)
-    #prior_SM = (prior_S @ prior_m)
+    posterior_m = posterior_S @ ((prior_S @ prior_m) + (1 / a) * X.T * para_y)
 
-    #a_1_AT_PARA_Y = (1 / a) * A.T * para_y
+    predictive_m = X @ posterior_m
+    predictive_S = a + (X @ (posterior_S @ X.T))
 
-    #prior_A_1 = prior_SM + a_1_AT_PARA_Y
-
-    #posterior_m = posterior_S @ prior_A_1
-
-    posterior_m = posterior_S.dot(prior_S.dot(prior_m) + (1 / args.a) * X.T * y)
-
-
-
-
-    predictive_m = X.dot(posterior_m)
-    predictive_S = args.a + X.dot(posterior_S.dot(X.T))
-
-    print('Add data point (%s, %s):\n' % (x, y))
-    print('Posterior mean:\n', posterior_m, '\n')
-    print('Posterior variance:\n', posterior_S, '\n')
-    print('Predictive distribution ~ N(%s, %s)' % (predictive_m.item(), predictive_S.item()))
-    print('-'*70)
+    print("Add data point (", para_x, ", ", para_y, "):\n")
+    print("Posterior mean:\n", posterior_m, "\n")
+    print("Posterior variance:\n", posterior_S, "\n")
+    print("Predictive distribution ~ N(", predictive_m[0][0], ", ", predictive_S[0][0], ")")
+    print("-"*73)
 
 
     prior_m = posterior_m
@@ -121,38 +106,10 @@ for i in range(1, 5000):
 
 
 
-
-
-
-#    variance_new = (a * (A.T @ A)) + S
-#    inv_CovarianceMatrix = np.linalg.inv(variance)
-#    mean_new = inv_CovarianceMatrix @ (a * A.T @ Y + variance @ mean)
-#
-#    S = np.linalg.pinv(variance)
-
-    #variance_new = copy.deepcopy(np.linalg.inv(a * (A.T @ A) + S))
-
-    #print(np.shape(mean))
-
-    #mean_new = copy.deepcopy(variance_new @ ((a * (A.T @ Y)) + (S @ mean)))
-
-
-    print('Update times: ', cnt)
-    if cnt > 1000 and abs(predictive_S.item() - a) < 1e-3:
+    print("Update times: ", cnt)
+    if cnt > 1000 and abs(predictive_S[0][0] - a) < 1e-3:
         break
 print('Update times_out: ', cnt)
-    #mean = copy.deepcopy(mean_new)
-    #variance = copy.deepcopy(variance_new)
 
-#    CovarianceMatrix = a * (A.T @ A) + inv_CovarianceMatrix_S
-#    inv_CovarianceMatrix = np.linalg.pinv(CovarianceMatrix)
-#
-#    mEaN = inv_CovarianceMatrix @ (a * A.T @ Y + inv_CovarianceMatrix_S @ mEaN)
-#    inv_CovarianceMatrix_S = inv_CovarianceMatrix
-#    print("#####################\n")
-#
-#
-#    print(CovarianceMatrix, "\n\n")
-#    print(mEaN)
-
-    #print("mean: ", np.mean(X_Y), "var: ", np.cov(X_Y))
+ploting(Ground_truth = w, Predict_result = posterior_m, Sample_X = X_set, Sample_Y = Y_set,\
+        Incomes_m_10 = incomes_m_10, Incomes_m_50 = incomes_m_50)
