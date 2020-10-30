@@ -3,16 +3,25 @@ import numpy as np
 import copy
 
 
-def poly_base(input_x, basis, A):
+def poly_base(input_x, basis):
     tmp = np.zeros(basis)
     for iter_j in range(basis - 1, -1, -1):
-        tmp[iter_j] = input_x[-1] ** iter_j
+        tmp[iter_j] = input_x ** iter_j
 
-    return np.append(A, tmp).reshape(len(input_x), basis)
+    return tmp
 
+def poly_basis_generator(n, W, a):
+    """
+    W: (n, 1)
+    """
+    W = np.array(W).reshape(1, -1)
+    x = np.random.uniform(low=-1.0, high=1.0)
+    A = np.array([x ** i for i in range(n)])
+    return x, W.dot(A)[0] + uni_gaussian_generator(0, a)
 
-
-
+def uni_gaussian_generator(mean, variance):
+    normal = np.random.uniform(size=12).sum() - 6
+    return normal * np.sqrt(variance) + mean
 
 
 b = int(input("b : "))
@@ -26,28 +35,23 @@ for base in range(basis):
     w.append(w_input)
 
 II = np.identity(basis)
-BI = II * b
+#BI = II * b
+print(w)
 
-S = copy.deepcopy(BI)
+#prior_m = np.zeros(basis, dtype = float)
+prior_m = np.zeros((basis, 1))
+prior_S = np.identity(basis) * b
+#prior_S = II * b
 
-inv_S = np.linalg.inv(BI)
 
-variance = copy.deepcopy(inv_S)
-
-
-variance=(1/b)*np.identity(basis)
 
 #mEaN = np.zeros(basis, dtype = float)
-A = np.zeros(0)
+#A = np.zeros(0)
 X = np.zeros(0)
 Y = np.zeros(0)
 
 ## iter 1
-para_x, para_y = Poly_generator(basis = basis, a = a, w = w)
-X = np.append(X, para_x)
-Y = np.append(Y, para_y)
 
-A = poly_base(input_x = X, basis = basis, A = A)
 #print(A)
 #CovarianceMatrix = a * (A.T @ A) + BI
 #inv_CovarianceMatrix_S = np.linalg.pinv(CovarianceMatrix)
@@ -60,58 +64,55 @@ A = poly_base(input_x = X, basis = basis, A = A)
 #mean=np.zeros((basis))
 
 
-tri = a * (A.T @ A) + S
-
-inv_tri = np.linalg.inv(tri)
-
-mean = a * (inv_tri @ A.T @ Y)
-variance = inv_tri
-
-M_pron = copy.deepcopy(mean)
-
-S_pron = tri
-
-
-
-#variance = np.linalg.inv(a * (A.T @ A) + BI)
-#S = np.linalg.pinv(variance)
-#print(np.shape(variance_new))
-#print(np.shape(X.T))
-
-#mean = a * (variance @ A.T @ Y)
-
-print(X, Y)
-print(A)
-print(S)
-print(variance)
-print(mean)
-
+#inv_posterior_S = prior_S + (1 / a)  * A.T @ A
+#posterior_S = np.linalg.inv(inv_posterior_S)
+#
+#posterior_m = (posterior_S @ prior_S @ prior_m) + (1 / a) * A.T * para_y
+#
+#prior_m = posterior_m
+#prior_S = inv_posterior_S
 
 ## iter 2
-for i in range(1, 1000):
-    para_x, para_y = Poly_generator(basis = basis, a = a, w = w)
+cnt = 0
+for i in range(1, 5000):
+    cnt = cnt + 1
+    #para_x, para_y = Poly_generator(basis = basis, a = a, w = w)
+    para_x, para_y = poly_basis_generator(n = basis, W = w, a = a)
     print(para_x, para_y)
     X = np.append(X, para_x)
     Y = np.append(Y, para_y)
-    A = poly_base(input_x = X, basis = basis, A = A)
+    A = poly_base(input_x = para_x, basis = basis)
+    print(A)
     if i == 8:
         print(A)
         print(X, Y)
 
 
 
-    tir = a * (A.T @ A) + S_pron
-    inv_tri = np.linalg.inv(tri)
+    #inv_posterior_S = prior_S + (1 / a) * A.T @ A
+    inv_posterior_S = prior_S + (1 / a) * A.T.dot(A)
+    posterior_S = np.linalg.inv(inv_posterior_S)
+    
+    #posterior_m = posterior_S @ ((prior_S @ prior_m) + (1 / a) * A.T * para_y)
+    #prior_SM = (prior_S @ prior_m)
 
-    mean_pre = inv_tri @ (a * A.T @ Y + S_pron @ M_pron)
-    variance = A.T @ inv_tri @ A
+    #a_1_AT_PARA_Y = (1 / a) * A.T * para_y
 
-    mean = mean_pre.T @ A.T
+    #prior_A_1 = prior_SM + a_1_AT_PARA_Y
+
+    #posterior_m = posterior_S @ prior_A_1
+
+    posterior_m = posterior_S.dot(prior_S.dot(prior_m) + (1 / a) * A.T * para_y)
+
+
+    prior_m = copy.deepcopy(posterior_m)
+    prior_S = copy.deepcopy(inv_posterior_S)
+
+    predictive_m = A @ posterior_m
+    predictive_S = a + A @ posterior_S @ A.T
 
 
 
-    M_pron = copy.deepcopy(mean)
-    S_pron = np.linalg.inv(variance)
 
 
 
@@ -129,13 +130,16 @@ for i in range(1, 1000):
 
     #mean_new = copy.deepcopy(variance_new @ ((a * (A.T @ Y)) + (S @ mean)))
 
-    print('Posterior mean:')
-    print(mean)
+    print("Posterior mean:")
+    print(prior_m)
     print()
-    print('Posterior variance:')
-    print(variance)
+    print("Posterior variance:")
+    print(prior_S)
     print()
-
+    print('Update times: ', cnt)
+    if cnt > 1000 and abs(predictive_S.item() - a) < 1e-3:
+        break
+print('Update times_out: ', cnt)
     #mean = copy.deepcopy(mean_new)
     #variance = copy.deepcopy(variance_new)
 
