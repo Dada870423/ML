@@ -79,18 +79,17 @@ for i in range(1, 5000):
     #para_x, para_y = Poly_generator(basis = basis, a = a, w = w)
     para_x, para_y = poly_basis_generator(n = basis, W = w, a = a)
     print(para_x, para_y)
-    X = np.append(X, para_x)
-    Y = np.append(Y, para_y)
-    A = poly_base(input_x = para_x, basis = basis)
-    print(A)
-    if i == 8:
-        print(A)
-        print(X, Y)
+    #X = np.append(X, para_x)
+    #Y = np.append(Y, para_y)
+    #A = poly_base(input_x = para_x, basis = basis)
+    X = np.array([[para_x ** j for j in range(args.n)]])
+    #print(A)
+
 
 
 
     #inv_posterior_S = prior_S + (1 / a) * A.T @ A
-    inv_posterior_S = prior_S + (1 / a) * A.T.dot(A)
+    inv_posterior_S = prior_S + (1 / args.a) * X.T.dot(X)
     posterior_S = np.linalg.inv(inv_posterior_S)
     
     #posterior_m = posterior_S @ ((prior_S @ prior_m) + (1 / a) * A.T * para_y)
@@ -102,16 +101,23 @@ for i in range(1, 5000):
 
     #posterior_m = posterior_S @ prior_A_1
 
-    posterior_m = posterior_S.dot(prior_S.dot(prior_m) + (1 / a) * A.T * para_y)
+    posterior_m = posterior_S.dot(prior_S.dot(prior_m) + (1 / args.a) * X.T * y)
 
 
-    prior_m = copy.deepcopy(posterior_m)
-    prior_S = copy.deepcopy(inv_posterior_S)
-
-    predictive_m = A @ posterior_m
-    predictive_S = a + A @ posterior_S @ A.T
 
 
+    predictive_m = X.dot(posterior_m)
+    predictive_S = args.a + X.dot(posterior_S.dot(X.T))
+
+    print('Add data point (%s, %s):\n' % (x, y))
+    print('Posterior mean:\n', posterior_m, '\n')
+    print('Posterior variance:\n', posterior_S, '\n')
+    print('Predictive distribution ~ N(%s, %s)' % (predictive_m.item(), predictive_S.item()))
+    print('-'*70)
+
+
+    prior_m = posterior_m
+    prior_S = inv_posterior_S
 
 
 
@@ -130,12 +136,7 @@ for i in range(1, 5000):
 
     #mean_new = copy.deepcopy(variance_new @ ((a * (A.T @ Y)) + (S @ mean)))
 
-    print("Posterior mean:")
-    print(prior_m)
-    print()
-    print("Posterior variance:")
-    print(prior_S)
-    print()
+
     print('Update times: ', cnt)
     if cnt > 1000 and abs(predictive_S.item() - a) < 1e-3:
         break
