@@ -14,11 +14,16 @@ if "p" in mode or "P" in mode:
         w_input = int(input("W" + str(base) + " : "))
         w.append(w_input)
 
+    X_samples = list()
+    Y_samples = list()
     for i in range(100000):
-        para_x, y = Poly_generator(basis = basis, a = a, w = w)
-        samples.append(y)
+        para_x, para_y = Poly_generator(basis = basis, a = a, w = w)
+        X_samples.append(para_x)
+        Y_samples.append(para_y)
     
-    plt.hist(samples, 50)
+    #plt.hist(samples, 50)
+    #plt.plot(para_x, para_y, color = "black", label = "w")
+    plt.scatter(X_samples, Y_samples, c = "aqua", label = "Sample", marker = "x")
     plt.title("basis: " + str(basis) + " , a: " + str(a) + " , w: " + str(w))
 else:
     print("Univariate gaussian")
