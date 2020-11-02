@@ -21,8 +21,7 @@ if "p" in mode or "P" in mode:
         X_samples.append(para_x)
         Y_samples.append(para_y)
     
-    #plt.hist(samples, 50)
-    #plt.plot(para_x, para_y, color = "black", label = "w")
+
     plt.scatter(X_samples, Y_samples, c = "aqua", label = "Sample", marker = "x")
     plt.title("basis: " + str(basis) + " , a: " + str(a) + " , w: " + str(w))
 else:
@@ -30,7 +29,7 @@ else:
     mean = int(input("mean : "))
     varinance = int(input("varinance : "))
     for i in range(100000):
-       SSSS = Univariate_generator(mean = mean, varinance = varinance)
+       SSSS = Univariate_generator(mean = mean, variance = varinance)
        samples.append(SSSS)
 
     plt.hist(samples, 50)

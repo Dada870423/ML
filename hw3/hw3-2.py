@@ -15,5 +15,3 @@ for i in range(10000):
     print("Add data point: ", SSSS)
     print("mean = ", np.mean(sourse), "   Variance = ", np.var(sourse))
     sourse.append(SSSS)
-
-
