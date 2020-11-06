@@ -4,7 +4,6 @@ from gaussian import *
 import copy
 
 def generage_point(data_para_1, data_para_2, points_num):
-    #print(data_para_1)
     A = list()
     y = list()
     sample_point = list()
@@ -35,19 +34,13 @@ def Newton(w, A, y, lr = 0.01):
     norm = 100
     it = 0
     while np.linalg.norm(norm - pre_norm) >= 0.0001 or it < 3:
-        #print("abs(norm - pre_norm)", abs(norm - pre_norm))
         it = it + 1
-        #print(Hessian)
         Hessian, rank = get_Hessian(w = w, A = A)
-        
+
         if rank == 3:
-            #print("do newton")
-            #new_w = w - 0.005 * (inv_hessian @ Gradient_desent(w, A, y))
-            
             inv_hessian = np.linalg.inv(Hessian)
             new_w = w + lr * (inv_hessian @ cal_J(w = w, A = A, y = y))
             
-
             pre_norm = copy.deepcopy(norm)
             norm = np.linalg.norm(inv_hessian)
 
@@ -56,7 +49,6 @@ def Newton(w, A, y, lr = 0.01):
             print("do grandient desent")
             w = Gradient_desent(w = w, A = A, y = y, lr = 0.001)
             return w
-    #print("abs(norm - pre_norm)", np.linalg.norm(norm - pre_norm))
     return w
 
 
@@ -74,14 +66,12 @@ def get_Hessian(w, A):
 
 
 def Gradient_desent(w, A, y, lr = 0.01):
-    #print(A)
     norm = 100
     while norm >= 0.01:
         J = cal_J(w = w, A = A, y = y)
         new_w = w + (lr * J)
         w = copy.deepcopy(new_w)
         norm = np.linalg.norm(J)
-    #print(norm)
 
     return w
 
@@ -99,21 +89,14 @@ def predict(w, A, sample_point, points_num):
     cluster_correct_1 = np.sum(y_pred[:50] < 0.5)
     cluster_correct_2 = np.sum(y_pred[50:] >= 0.5)
 
-
-
     print(w[0], "\n", w[1], "\n", w[2], "\n")
     print("Confusion Matrix:\n             Predict cluster 1   Predict cluster 2")
     print("Is cluster 1       ", cluster_correct_1, "                  ", points_num - cluster_correct_1)
     print("Is cluster 2       ", points_num - cluster_correct_2, "                  ", cluster_correct_2, "\n")
     print("Sensitivity (Successfully predict cluster 1): ", cluster_correct_1 / points_num)
     print("Specificity (Successfully predict cluster 2): ", cluster_correct_2 / points_num)
-    #print(np.sum(y_pred[:50] < 0.5))
-    #print(np.sum(y_pred[50:] >= 0.5))
-    
 
     return c0, c1
-
-
 
 def ploting(sample_point, gradient_c0, gradient_c1, Newton_c0, Newton_c1, points_num):
     
@@ -139,6 +122,3 @@ def ploting(sample_point, gradient_c0, gradient_c1, Newton_c0, Newton_c1, points
     plt.legend(loc = 'upper right')
 
     plt.show()
-
-
-
