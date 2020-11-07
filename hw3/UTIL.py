@@ -1,3 +1,8 @@
+import numpy as np
+import math
+import random
+import matplotlib.pyplot as plt
+
 def funCtion(x, parameter):
     lead = len(parameter)
     y = 0
