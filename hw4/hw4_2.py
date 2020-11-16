@@ -31,27 +31,66 @@ eMeM = EMEM(Binomial_matrix = Binomial_matrix)
 #np.save("bio.txt", line)
 #
 eMeM.E_step()
-
+print("lambda before", eMeM.lamBda)
+eMeM.M_step()
 print(eMeM.hidden_W[3])
 print(eMeM.hidden_W[4])
+print(eMeM.hidden_W[5])
+print("lambda", eMeM.lamBda)
 
 
+eMeM.E_step()
+eMeM.M_step()
+print(eMeM.hidden_W[3])
+print(eMeM.hidden_W[4])
+print("lambda", eMeM.lamBda)
+
+
+eMeM.E_step()
+eMeM.M_step()
+print(eMeM.hidden_W[3])
+print(eMeM.hidden_W[4])
+print("lambda", eMeM.lamBda)
+
+
+eMeM.E_step()
+eMeM.M_step()
+print(eMeM.hidden_W[3])
+print(eMeM.hidden_W[4])
+print("lambda", eMeM.lamBda)
+
+eMeM.E_step()
+eMeM.M_step()
+print(eMeM.hidden_W[3])
+print(eMeM.hidden_W[4])
+print("lambda", eMeM.lamBda)
+
+#
+#eMeM.E_step()
 #eMeM.M_step()
+#print(eMeM.hidden_W[3])
+#print(eMeM.hidden_W[4])
+#
+#
+#eMeM.E_step()
+#eMeM.M_step()
+#print(eMeM.hidden_W[3])
+#print(eMeM.hidden_W[4])
 #
 #print(eMeM.probability[3])
 #
 #
 #print(eMeM.probability[3][160])
 #
-##for iter_y in range(28):
-##    for iter_x in range(28):
-##        print(int(Binomial_matrix[3][iter_x + iter_y * 28]), end = " ")
-##    print("\n\n\n\n")
-#    #line = bio_ptr.readline()
-#for iter_y in range(28):
-#    for iter_x in range(28):
-#        print(eMeM.probability[3][iter_x + iter_y * 28], end = " ")
-#    print()
+for iter_y in range(28):
+    for iter_x in range(28):
+        print(int(Binomial_matrix[3][iter_x + iter_y * 28]), end = " ")
+    print()
+    #line = bio_ptr.readline()
+for iter_y in range(28):
+    for iter_x in range(28):
+        print(int(Binomial_matrix[4][iter_x + iter_y * 28]), end = " ")
+    print()
 #print(int(data))
 
 #data = np.loadtxt("binomial.txt")

@@ -29,7 +29,7 @@ def norm_probability(probability):
         total = total + probability[iter_i]
     for iter_i in range(len(probability)):
         probability[iter_i] = float(float(probability[iter_i]) / float(total))
-    print(total)
+    #print(total)
     return probability
 
 
