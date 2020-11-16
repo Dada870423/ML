@@ -4,7 +4,7 @@ from UTIL import *
 
 class EMEM(object):
     def __init__(self, Binomial_matrix):
-        self.input_N = 60000
+        self.input_N = 1000
         self.lamBda = np.ones(10)
         self.probability = np.random.rand(10, 28 * 28)
         self.hidden_W = np.ones((self.input_N, 10))
@@ -40,6 +40,7 @@ class EMEM(object):
             #if iter_image == 4:
             #    print("before", self.hidden_W[4])
             self.hidden_W[iter_image] = norm_probability(self.hidden_W[iter_image])
+        self.hidden_W[self.hidden_W<0.001] = 0.001
         #print("after", self.hidden_W[3])
         #print("after", self.hidden_W[4])
 
