@@ -33,3 +33,8 @@ variance = GP.Cal_var(x = x, y = y)
 #print(GP.Cal_kernel(4, 3))
 
 GP.plotting(mean, variance, x, y)
+
+opt_alpha, opt_lengthscale = GP.optimize()
+
+
+print(opt_alpha, opt_lengthscale)
