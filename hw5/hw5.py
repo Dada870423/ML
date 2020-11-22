@@ -1,10 +1,19 @@
 import numpy as np
+import argparse
 from GaussianProcess import *
 
 
+parser = argparse.ArgumentParser()
 
+parser.add_argument("--alpha", type = float, default =  1.0, help = "alpha")
+parser.add_argument("--lengthscale", type = float, default =  1.0, help = "lengthscale")
+parser.add_argument("--variance", type = float, default = 1.0, help = "variance")
 
-GP = GaussianProcess(beta = 5, delta = 1)
+input_ = parser.parse_args()
+
+print("para", input_.alpha, input_.lengthscale, input_.variance)
+
+GP = GaussianProcess(alpha = input_.alpha, lengthscale = input_.lengthscale, variance = input_.variance)
 
 
 x, y = GP.get_data()
@@ -34,7 +43,12 @@ variance = GP.Cal_var(x = x, y = y)
 
 GP.plotting(mean, variance, x, y)
 
-opt_alpha, opt_lengthscale = GP.optimize()
+print(x, y)
 
+#opt_alpha, opt_lengthscale, opt_variance, error = GP.optimize()
+#opt_alpha, opt_lengthscale = GP.optimize()
 
-print(opt_alpha, opt_lengthscale)
+#print(opt_alpha, opt_lengthscale)
+
+#print(opt_alpha, opt_lengthscale, opt_variance, error)
+

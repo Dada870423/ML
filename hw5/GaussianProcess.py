@@ -3,22 +3,35 @@ import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 
 class GaussianProcess(object):
-    def __init__(self, beta = 5, delta = 1):
-        self.beta = beta
-        self.delta = delta
+    def __init__(self, alpha, lengthscale, variance):
+        self.beta = 5
+        self.delta = 1
+        self.alpha = alpha
+        self.lengthscale = lengthscale
+        self.variance = variance
         self.plot_x = np.arange(-60, 60, 0.1)
     
 
 
-    def Cal_kernel(self, X1, X2, alpha = 1, variance = 1, lengthscale = 1):
+    def Cal_kernel(self, X1, X2):
+        Kernel = np.zeros((len(X1), len(X2)))
+        for iter_y in range(len(X1)):
+            for iter_x in range(len(X2)):
+                fucking = 1 + (((X1[iter_y] - X2[iter_x]) ** 2) / \
+                    (2 * self.alpha * (self.lengthscale ** 2)))
+                Kernel[iter_y][iter_x] = (self.variance ** 2) * (fucking ** (- self.alpha))
+        return Kernel
+    
+
+
+    def opt_Cal_kernel(self, X1, X2, alpha , variance, lengthscale):
         Kernel = np.zeros((len(X1), len(X2)))
         for iter_y in range(len(X1)):
             for iter_x in range(len(X2)):
                 fucking = 1 + (((X1[iter_y] - X2[iter_x]) ** 2) / \
                     (2 * alpha * (lengthscale ** 2)))
                 Kernel[iter_y][iter_x] = (variance ** 2) * (fucking ** (- alpha))
-        return Kernel
-    
+        return Kernel    
     #def Cal_small_kernel(self, X1, X2, alpha = 1, variance = 1, lengthscale = 1):
     #    fucking = 1 + (((X1[iter_y] - X2) ** 2) / (2 * alpha * (lengthscale ** 2)))
     #    return (variance ** 2) * (fucking ** (- alpha))
@@ -71,8 +84,10 @@ class GaussianProcess(object):
 
 
         for iter_pixel in range(len(K_Xstar_Xstar)):
-            K_Xstar_Xstar[iter_pixel] = 1 / self.beta + 1
-            variance[iter_pixel] = K_Xstar_Xstar[iter_pixel] - self.K_X_Xstar[:,iter_pixel] @ (np.linalg.inv(self.C_xn_xm)) @ self.K_X_Xstar[:,iter_pixel]
+            fucking = 1 + (((self.plot_x[iter_pixel] - self.plot_x[iter_pixel]) ** 2) / \
+                    (2 * self.alpha * (self.lengthscale ** 2)))
+            K_Xstar_Xstar[iter_pixel] = 1 / self.beta + fucking
+            variance[iter_pixel] = np.abs(K_Xstar_Xstar[iter_pixel] - self.K_X_Xstar[:,iter_pixel] @ (np.linalg.inv(self.C_xn_xm)) @ self.K_X_Xstar[:,iter_pixel])
         return variance
 
 
@@ -81,27 +96,38 @@ class GaussianProcess(object):
 
     def Log_Likelihood(self, x0):
         #self.Kernel_xn_xm
-        alpha, lengthscale = x0[0], x0[1]
-        K = self.Cal_kernel(X1 = self.x, X2 = self.x, alpha = alpha, lengthscale = lengthscale)
+        alpha, lengthscale, variance = x0[0], x0[1], x0[2]
+        #alpha, lengthscale = x0[0], x0[1]
+        K = self.opt_Cal_kernel(X1 = self.x, X2 = self.x, alpha = alpha, lengthscale = lengthscale, variance = variance)
+        if np.linalg.matrix_rank(K) != len(self.x):
+            return 1000
         #K = self.Kernel_xn_xm
-        lg_norm_K = np.log(np.abs(np.linalg.det(K)))
+        lgggg = np.abs(np.linalg.det(K))
+        if lgggg == 0:
+            return 1000
+        lg_norm_K = np.log(lgggg)
         inv_K = np.linalg.inv(K)
-        ans = - 0.5 * (self.y.T @ inv_K @ self.y + lg_norm_K + len(self.x) * np.log(2 * np.pi))
+        ans = 0.5 * (self.y.T @ inv_K @ self.y + lg_norm_K + len(self.x) * np.log(2 * np.pi))
+        print(ans)
         return ans
 
 
 
     def optimize(self):
         error = 1000
-        inits = np.arange(1, 33, 3)
+        inits = np.arange(1, 10, 1)
+        #opt_alpha, opt_lengthscale, opt_variance = 1.0, 1.0, 1.0
         opt_alpha, opt_lengthscale = 1.0, 1.0
         for iter_alpha in inits:
             for iter_lengthscale in inits:
-                result = minimize(self.Log_Likelihood, x0 = [iter_alpha, iter_lengthscale])
-                if result.fun < error:
-                    error = result.fun
-                    opt_alpha, opt_lengthscale = result.x
-        return opt_alpha, opt_lengthscale
+                for iter_variance in inits:
+                    result = minimize(self.Log_Likelihood, x0 = [iter_alpha, iter_lengthscale, iter_variance], method = "SLSQP")
+                    #result = minimize(self.Log_Likelihood, x0 = [iter_alpha, iter_lengthscale], method = "SLSQP")
+                    if result.fun < error:
+                        error = result.fun
+                        #opt_alpha, opt_lengthscale = result.x
+                        opt_alpha, opt_lengthscale, opt_variance = result.x
+        return opt_alpha, opt_lengthscale, opt_variance, error
 
 
 
@@ -113,9 +139,6 @@ class GaussianProcess(object):
         
         plt.plot(self.plot_x, mean, 'coral')
         vvvvvvar = self.funCtion(x = self.plot_x, variance = variance)
-        #vvvar = 2*(variance**0.5)
-        #plt.plot(self.plot_x, mean - vvvvvvar, color='coral')
-        #plt.plot(self.plot_x, mean + vvvvvvar, color='coral')
         plt.fill_between(self.plot_x, mean - vvvvvvar, mean + vvvvvvar, color='aqua')
         plt.scatter(x, y, c = "black")
 
@@ -141,7 +164,9 @@ class GaussianProcess(object):
 
 
 
-
+## result
+## 1335.1519158971716 -1.1007435869267364 34164.09859126492
+## 5.690400937090753 2.0249092985716213
 
 
 
