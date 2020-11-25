@@ -113,7 +113,7 @@ for iter_y in range(28):
 for i in range(10):
 	for iter_y in range(28):
 	    for iter_x in range(28):
-	    	if eMeM.probability[iter_x + iter_y * 28][i] < 0.2:
+	    	if eMeM.probability[iter_x + iter_y * 28][i] < 0.4:
 	    		print("0", end = "")
 	    	else:
 	    		print("1", end = "")

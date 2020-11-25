@@ -62,7 +62,7 @@ class EMEM(object):
                             
                 
                 self.probability[iter_pixel][iter_digit] /= self.lamBda[iter_digit]
-            print()
+
         
 
 
