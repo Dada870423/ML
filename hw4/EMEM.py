@@ -6,7 +6,7 @@ class EMEM(object):
     def __init__(self, Binomial_matrix):
         self.input_N = 1000
         self.lamBda = np.ones(10)
-        self.probability = np.random.rand(10, 28 * 28)
+        self.probability = np.random.rand(28 * 28, 10)
         self.hidden_W = np.ones((self.input_N, 10))
         self.Binomial_matrix = Binomial_matrix
         self.jimmy = 100 # big number!!
@@ -23,9 +23,9 @@ class EMEM(object):
                 for iter_digit in range(10):
                 
                     if self.Binomial_matrix[iter_image][iter_pixel] == 1:
-                        self.hidden_W[iter_image][iter_digit] *= self.probability[iter_digit][iter_pixel]
+                        self.hidden_W[iter_image][iter_digit] *= self.probability[iter_pixel][iter_digit]
                     else:
-                        self.hidden_W[iter_image][iter_digit] *= (1 - self.probability[iter_digit][iter_pixel])
+                        self.hidden_W[iter_image][iter_digit] *= (1 - self.probability[iter_pixel][iter_digit])
                     ## deal with underflow
                 if iter_pixel % 10 == 0:
                     self.hidden_W[iter_image] = norm_probability(self.hidden_W[iter_image])
@@ -49,11 +49,28 @@ class EMEM(object):
 
         for iter_digit in range(10):
             for iter_pixel in range(28 * 28):
-                self.probability[iter_digit][iter_pixel] = 0
-                for iter_image in range(self.input_N):
+                self.probability[iter_pixel][iter_digit] = 0
+        for iter_pixel in range(28 * 28):
+            for iter_image in range(self.input_N): 
+                for iter_digit in range(10):
                     if self.Binomial_matrix[iter_image][iter_pixel] == 1:
-                        self.probability[iter_digit][iter_pixel] += self.hidden_W[iter_image][iter_digit]
+                        self.probability[iter_pixel][iter_digit] += self.hidden_W[iter_image][iter_digit]
                             
-                self.probability[iter_digit][iter_pixel] /= self.lamBda[iter_digit]
+                self.probability[iter_pixel] = norm_probability(probability[iter_pixel])
         self.lamBda= norm_probability(self.lamBda)
+
+
+    def Test(self):
+        ans = np.zeors(10)
+        for iter_digit in range(10):
+            print("hihi")
+
+
+
+
+
+
+
+
+
 
