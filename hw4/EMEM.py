@@ -1,5 +1,6 @@
 import numpy as np
 from UTIL import *
+import copy
 
 
 class EMEM(object):
@@ -17,7 +18,7 @@ class EMEM(object):
     def E_step(self):
         for iter_image in range(self.input_N):
             for iter_digit in range(10):
-                self.hidden_W[iter_image][iter_digit] = self.lamBda[iter_digit]
+                self.hidden_W[iter_image][iter_digit] = copy.deepcopy(self.lamBda[iter_digit])
         for iter_image in range(self.input_N):
             for iter_pixel in range(28 * 28):
                 for iter_digit in range(10):
@@ -30,7 +31,7 @@ class EMEM(object):
                 if iter_pixel % 10 == 0:
                     self.hidden_W[iter_image] = norm_probability(self.hidden_W[iter_image])
                     #self.hidden_W[iter_image][iter_digit] *= self.jimmy
-            self.hidden_W[iter_image] = norm_probability(self.hidden_W[iter_image])
+            self.hidden_W[iter_image] = copy.deepcopy(norm_probability(self.hidden_W[iter_image]))
 
             
         self.hidden_W[self.hidden_W<0.001] = 0.001
@@ -42,14 +43,14 @@ class EMEM(object):
 
     def M_step(self):
         for iter_digit in range(10):
-            self.lamBda[iter_digit] = 0
+            self.lamBda[iter_digit] = 0.0
             for iter_image in range(self.input_N):
                 self.lamBda[iter_digit] += self.hidden_W[iter_image][iter_digit]
 
 
         for iter_digit in range(10):
             for iter_pixel in range(28 * 28):
-                self.probability[iter_pixel][iter_digit] = 0
+                self.probability[iter_pixel][iter_digit] = 0.0
         for iter_pixel in range(28 * 28):
             for iter_image in range(self.input_N): 
                 for iter_digit in range(10):
@@ -57,7 +58,7 @@ class EMEM(object):
                         self.probability[iter_pixel][iter_digit] += self.hidden_W[iter_image][iter_digit]
                             
                 
-            self.probability[iter_pixel] = norm_probability(self.probability[iter_pixel])
+            self.probability[iter_pixel] = copy.deepcopy(norm_probability(self.probability[iter_pixel]))
         self.lamBda= norm_probability(self.lamBda)
 
 
