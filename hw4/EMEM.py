@@ -57,7 +57,7 @@ class EMEM(object):
                         self.probability[iter_pixel][iter_digit] += self.hidden_W[iter_image][iter_digit]
                             
                 
-                self.probability[iter_pixel] = norm_probability(self.probability[iter_pixel])
+            self.probability[iter_pixel] = norm_probability(self.probability[iter_pixel])
         self.lamBda= norm_probability(self.lamBda)
 
 
