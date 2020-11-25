@@ -84,7 +84,7 @@ print("lambda", eMeM.lamBda)
 #
 for iter_y in range(28):
     for iter_x in range(28):
-        print(int(eMeM.probability[1][iter_x + iter_y * 28]), end = " ")
+        print(int(eMeM.probability[iter_x + iter_y * 28][1]), end = " ")
     print()
     #line = bio_ptr.readline()
 #for iter_y in range(28):
