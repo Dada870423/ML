@@ -5,7 +5,7 @@ import copy
 
 class EMEM(object):
     def __init__(self, Binomial_matrix):
-        self.input_N = 100
+        self.input_N = 1000
         self.lamBda = np.ones(10)
         self.probability = np.random.rand(28 * 28, 10)
         self.hidden_W = np.ones((self.input_N, 10))
