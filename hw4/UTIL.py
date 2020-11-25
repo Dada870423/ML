@@ -27,6 +27,9 @@ def norm_probability(probability):
     total = 0.0
     for iter_i in range(len(probability)):
         total = total + probability[iter_i]
+    if total == 0:
+        print("probability:", probability)
+        return np.ones(10)
     for iter_i in range(len(probability)):
         probability[iter_i] = float(float(probability[iter_i]) / float(total))
     #print(total)

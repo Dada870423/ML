@@ -56,6 +56,7 @@ class EMEM(object):
                     if self.Binomial_matrix[iter_image][iter_pixel] == 1:
                         self.probability[iter_pixel][iter_digit] += self.hidden_W[iter_image][iter_digit]
                             
+                
                 self.probability[iter_pixel] = norm_probability(self.probability[iter_pixel])
         self.lamBda= norm_probability(self.lamBda)
 
