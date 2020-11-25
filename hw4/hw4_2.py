@@ -53,17 +53,17 @@ print(eMeM.hidden_W[4])
 print("lambda", eMeM.lamBda)
 
 
-eMeM.E_step()
-eMeM.M_step()
-print(eMeM.hidden_W[3])
-print(eMeM.hidden_W[4])
-print("lambda", eMeM.lamBda)
-
-eMeM.E_step()
-eMeM.M_step()
-print(eMeM.hidden_W[3])
-print(eMeM.hidden_W[4])
-print("lambda", eMeM.lamBda)
+#eMeM.E_step()
+#eMeM.M_step()
+#print(eMeM.hidden_W[3])
+#print(eMeM.hidden_W[4])
+#print("lambda", eMeM.lamBda)
+#
+#eMeM.E_step()
+#eMeM.M_step()
+#print(eMeM.hidden_W[3])
+#print(eMeM.hidden_W[4])
+#print("lambda", eMeM.lamBda)
 
 #
 #eMeM.E_step()

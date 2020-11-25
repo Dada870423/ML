@@ -5,7 +5,7 @@ import copy
 
 class EMEM(object):
     def __init__(self, Binomial_matrix):
-        self.input_N = 1000
+        self.input_N = 100
         self.lamBda = np.ones(10)
         self.probability = np.random.rand(28 * 28, 10)
         self.hidden_W = np.ones((self.input_N, 10))
@@ -56,7 +56,7 @@ class EMEM(object):
                 for iter_digit in range(10):
                     if self.Binomial_matrix[iter_image][iter_pixel] == 1:
                         self.probability[iter_pixel][iter_digit] += self.hidden_W[iter_image][iter_digit]
-                        print(self.hidden_W[iter_image][iter_digit])
+                        print(self.hidden_W[iter_image][iter_digit], self.probability[iter_pixel][iter_digit])
                             
                 
             self.probability[iter_pixel] = copy.deepcopy(norm_probability(self.probability[iter_pixel]))
