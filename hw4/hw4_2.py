@@ -92,14 +92,14 @@ for iter_y in range(28):
         print(eMeM.probability[iter_x + iter_y * 28][1], end = " ")
     print()
     #line = bio_ptr.readline()
-#for iter_y in range(28):
-#    for iter_x in range(28):
-#    	if eMeM.probability[1][iter_x + iter_y * 28] < 0.5:
-#    		print("0")
-#    	else:
-#    		print("1")
-#    print()
-#print("\n\n\n")
+for iter_y in range(28):
+    for iter_x in range(28):
+    	if eMeM.probability[iter_x + iter_y * 28][1] < 0.2:
+    		print("0")
+    	else:
+    		print("1")
+    print()
+print("\n\n\n")
 #
 #
 #print("")
