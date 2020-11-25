@@ -58,7 +58,7 @@ class EMEM(object):
                 for iter_digit in range(10):
                     if self.Binomial_matrix[iter_image][iter_pixel] == 1:
                         self.probability[iter_pixel][iter_digit] += self.hidden_W[iter_image][iter_digit]
-                        print(self.hidden_W[iter_image][iter_digit], self.probability[iter_pixel][iter_digit], iter_pixel, iter_digit)
+                        #print(self.hidden_W[iter_image][iter_digit], self.probability[iter_pixel][iter_digit], iter_pixel, iter_digit)
                             
                 
             self.probability[iter_pixel] = copy.deepcopy(norm_probability(self.probability[iter_pixel]))
