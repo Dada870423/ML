@@ -82,22 +82,22 @@ print("lambda", eMeM.lamBda)
 #
 #print(eMeM.probability[3][160])
 #
-#for iter_y in range(28):
-#    for iter_x in range(28):
-#        print(int(eMeM.probability[1][iter_x + iter_y * 28]), end = " ")
-#    print()
-    #line = bio_ptr.readline()
 for iter_y in range(28):
     for iter_x in range(28):
-    	if eMeM.probability[1][iter_x + iter_y * 28] < 0.5:
-    		print("0")
-    	else:
-    		print("1")
+        print(int(eMeM.probability[1][iter_x + iter_y * 28]), end = " ")
     print()
-print("\n\n\n")
-
-
-print("")
+    #line = bio_ptr.readline()
+#for iter_y in range(28):
+#    for iter_x in range(28):
+#    	if eMeM.probability[1][iter_x + iter_y * 28] < 0.5:
+#    		print("0")
+#    	else:
+#    		print("1")
+#    print()
+#print("\n\n\n")
+#
+#
+#print("")
 #print(int(data))
 
 #data = np.loadtxt("binomial.txt")
