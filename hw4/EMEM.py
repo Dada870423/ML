@@ -57,7 +57,7 @@ class EMEM(object):
             for iter_image in range(self.input_N): 
                 for iter_digit in range(10):
                     if self.Binomial_matrix[iter_image][iter_pixel] == 1:
-                        self.probability[iter_pixel][iter_digit] += self.hidden_W[iter_image][iter_digit]
+                        self.probability[iter_pixel][iter_digit] += (1 - self.hidden_W[iter_image][iter_digit])
                         #print(self.hidden_W[iter_image][iter_digit], self.probability[iter_pixel][iter_digit], iter_pixel, iter_digit)
                             
                 
