@@ -30,6 +30,7 @@ class EMEM(object):
                 if iter_pixel % 10 == 0:
                     self.hidden_W[iter_image] = norm_probability(self.hidden_W[iter_image])
                     #self.hidden_W[iter_image][iter_digit] *= self.jimmy
+            self.hidden_W[iter_image] = norm_probability(self.hidden_W[iter_image])
 
             
         self.hidden_W[self.hidden_W<0.001] = 0.001
