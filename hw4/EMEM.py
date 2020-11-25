@@ -18,16 +18,20 @@ class EMEM(object):
         for iter_image in range(self.input_N):
             for iter_digit in range(10):
                 self.hidden_W[iter_image][iter_digit] = self.lamBda[iter_digit]
-                for iter_pixel in range(28 * 28):
+        for iter_image in range(self.input_N):
+            for iter_pixel in range(28 * 28):
+                for iter_digit in range(10):
+                
                     if self.Binomial_matrix[iter_image][iter_pixel] == 1:
                         self.hidden_W[iter_image][iter_digit] *= self.probability[iter_digit][iter_pixel]
                     else:
                         self.hidden_W[iter_image][iter_digit] *= (1 - self.probability[iter_digit][iter_pixel])
                     ## deal with underflow
-                    if iter_pixel % 10 == 0:
-                        self.hidden_W[iter_image][iter_digit] *= self.jimmy
+                if iter_pixel % 10 == 0:
+                    self.hidden_W[iter_image] = norm_probability(self.hidden_W[iter_image])
+                    #self.hidden_W[iter_image][iter_digit] *= self.jimmy
 
-            self.hidden_W[iter_image] = norm_probability(self.hidden_W[iter_image])
+            
         self.hidden_W[self.hidden_W<0.001] = 0.001
 
 
