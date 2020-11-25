@@ -51,11 +51,11 @@ print(eMeM.hidden_W[4])
 print("lambda", eMeM.lamBda)
 
 
-#eMeM.E_step()
-#eMeM.M_step()
-#print(eMeM.hidden_W[3])
-#print(eMeM.hidden_W[4])
-#print("lambda", eMeM.lamBda)
+eMeM.E_step()
+eMeM.M_step()
+print(eMeM.hidden_W[3])
+print(eMeM.hidden_W[4])
+print("lambda", eMeM.lamBda)
 
 
 #eMeM.E_step()
@@ -92,14 +92,15 @@ for iter_y in range(28):
         print(eMeM.probability[iter_x + iter_y * 28][1], end = " ")
     print()
     #line = bio_ptr.readline()
-for iter_y in range(28):
-    for iter_x in range(28):
-    	if eMeM.probability[iter_x + iter_y * 28][1] < 0.2:
-    		print("0")
-    	else:
-    		print("1")
-    print()
-print("\n\n\n")
+for i in range(10):
+	for iter_y in range(28):
+	    for iter_x in range(28):
+	    	if eMeM.probability[iter_x + iter_y * 28][i] < 0.2:
+	    		print("0", end = "")
+	    	else:
+	    		print("1", end = "")
+	    print()
+	print("\n\n\n")
 #
 #
 #print("")
