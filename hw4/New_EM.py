@@ -60,12 +60,12 @@ def M_step(Binomial_matrix):
 
 
 @jit
-def Test():
+def Test(Binomial_matrix):
     GroundTruth = np.zeros((10, 10))
     items = Get_label_100()
     for iter_digit in range(10):
         for iter_item in range(int(items[iter_digit])):
-            ans = Cal_w(image_th = int(label[iter_digit][iter_item]))
+            ans = Cal_w(Binomial_matrix, image_th = int(label[iter_digit][iter_item]))
             print("-- ", iter_digit, " --   : ", ans.argmax())
             GroundTruth[iter_digit][ans.argmax()] += 1
     return GroundTruth
