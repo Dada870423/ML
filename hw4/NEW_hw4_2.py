@@ -10,7 +10,7 @@ from New_EM import *
 train_label_file = "file/train-labels-idx1-ubyte"
 train_image_file = "file/train-images-idx3-ubyte"
 
-input_N = 1000
+input_N = 60000
 lamBda = np.ones(10)
 probability = np.random.rand(28 * 28, 10)
 hidden_W = np.ones((input_N, 10))
@@ -42,15 +42,16 @@ for iter_ in range(30):
 
 GroundTruth = Test(Binomial_matrix, Label_fptr, label, probability)
 
-tmp = copy.deepcopy(GroundTruth)
+
 for iter_y in range(10):
 	for iter_x in range(10):
 		print(int(GroundTruth[iter_y][iter_x]), end = " ")
 	print()
 
-print(GroundTruth)
-print(GroundTruth.argmax())
+print("GTTTT", GroundTruth)
+print("GT.argmax", GroundTruth.argmax())
 
+tmp = copy.deepcopy(GroundTruth)
 RRRow = np.zeros(10)
 CCCol = np.zeros(10)
 

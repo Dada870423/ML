@@ -56,14 +56,14 @@ def M_step(Binomial_matrix, lamBda, hidden_W, probability, input_N):
 def Test(Binomial_matrix, Label_fptr, label, probability):
     GroundTruth = np.zeros((10, 10))
     items = np.zeros(10)
-    for iter_label in range(1000):
+    for iter_label in range(60000):
         label_now = get_label(Label_fptr)
         xxx = int(items[label_now])
         label[label_now][xxx] = iter_label
         items[label_now] = items[label_now] + 1
 
-    for iter_digit in range(10):
-        for iter_item in range(int(items[iter_digit])):
+    for iter_digits in range(10):
+        for iter_item in range(int(items[iter_digits])):
             ans = np.ones(10)
             for iter_pixel in range(28 * 28):
                 for iter_digit in range(10):
@@ -77,7 +77,7 @@ def Test(Binomial_matrix, Label_fptr, label, probability):
                     ans /= ans.sum()
                     #hidden_W[iter_image][iter_digit] *= jimmy
             ans /= ans.sum()
-            GroundTruth[iter_digit][ans.argmax()] += 1
+            GroundTruth[iter_digits][ans.argmax()] += 1
     return GroundTruth
 
 
