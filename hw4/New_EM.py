@@ -29,9 +29,9 @@ def E_step(Binomial_matrix):
                     hidden_W[iter_image][iter_digit] *= (1 - probability[iter_pixel][iter_digit])
                 ## deal with underflow
             if iter_pixel % 10 == 0:
-                hidden_W[iter_image] = norm_probability(hidden_W[iter_image])
+                hidden_W[iter_image] /= hidden_W[iter_image].sum()
                 #hidden_W[iter_image][iter_digit] *= jimmy
-        hidden_W[iter_image] = norm_probability(hidden_W[iter_image])
+        hidden_W[iter_image] /= hidden_W[iter_image].sum()
         
     hidden_W[hidden_W<0.001] = 0.001
 
@@ -56,10 +56,10 @@ def M_step(Binomial_matrix):
             
             probability[iter_pixel][iter_digit] /= lamBda[iter_digit]
     
-    lamBda= norm_probability(lamBda)
+    lamBda /= lamBda.sum()
 
 
-@jit
+
 def Test(Binomial_matrix):
     GroundTruth = np.zeros((10, 10))
     items = Get_label_100()
@@ -70,7 +70,7 @@ def Test(Binomial_matrix):
             GroundTruth[iter_digit][ans.argmax()] += 1
     return GroundTruth
 
-@jit
+
 def Cal_w(Binomial_matrix, image_th):
     ans = np.ones(10)
     for iter_pixel in range(28 * 28):
@@ -87,7 +87,7 @@ def Cal_w(Binomial_matrix, image_th):
     ans = norm_probability(ans)
     return ans
 
-@jit
+
 def Get_label_100():
     items = np.zeros(10)
     for iter_label in range(1000):
