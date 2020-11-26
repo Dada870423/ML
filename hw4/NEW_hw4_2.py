@@ -32,7 +32,7 @@ for iter_ in range(30):
 	print_P(probability)
 	
 	norm = np.linalg.norm(old_lamBda - lamBda)
-	print("No. of Iteration: ", i, " , Difference:",  "diff", "\n")
+	print("No. of Iteration: ", iter_, " , Difference:",  norm, "\n")
 	print("-" * 73)
 	old_lamBda = copy.deepcopy(lamBda)
 	if iter_ > 5 and norm < 0.0001:
