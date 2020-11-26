@@ -1,14 +1,14 @@
 import numpy as np
 #import argparse
 from gaussian import *
-from EMEM import *
-from UTIL import *
-from MNIST import *
 
+from UTIL import *
+
+from MNIST import *
+from EMEM import *
 train_label_file = "file/train-labels-idx1-ubyte"
 train_image_file = "file/train-images-idx3-ubyte"
-train_label_file = "file/train-labels-idx1-ubyte"
-train_image_file = "file/train-images-idx3-ubyte"
+
 
 
 
@@ -22,7 +22,7 @@ Binomial_matrix = Get_Binomial(train_image_file = train_image_file)
 
 
 
-eMeM = EMEM(Binomial_matrix = Binomial_matrix)
+eMeM = EMEM(Binomial_matrix = Binomial_matrix, train_label_file = train_label_file)
 #print(eMeM.lamBda)
 #print(np.sum(eMeM.lamBda))
 #bio_ptr = open("binomial.txt", "r")
@@ -119,6 +119,10 @@ for i in range(10):
 	    		print("1", end = "")
 	    print()
 	print("\n\n\n")
+
+
+eMeM.Test()
+
 #
 #
 #print("")

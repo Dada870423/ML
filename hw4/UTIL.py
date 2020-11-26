@@ -14,6 +14,14 @@ def init_data(image_file):
     return Image_fptr
 
 
+def Get_label_fptr(label_file):
+    Label_fptr = open(label_file, "rb")
+
+    ## init label file
+    Label_fptr.read(4) ## magic number
+    Label_fptr.read(4) ## number of items
+    return Label_fptr
+
 def get_label(fptr):
     label = int.from_bytes(fptr.read(1), byteorder = 'big')
     return label
@@ -53,4 +61,7 @@ def compare(predict_probability, Ans, fptr):
     for digit in range(10):
         fptr.write(str(digit) + ": " + str(predict_probability[digit]) + "\n")
     return int(prediction != Ans)
+
+
+
 
