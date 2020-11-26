@@ -35,7 +35,7 @@ for iter_ in range(30):
 	print("No. of Iteration: ", iter_, " , Difference:",  norm, "\n")
 	print("-" * 73)
 	old_lamBda = copy.deepcopy(lamBda)
-	if iter_ > 5 and norm < 0.0001:
+	if iter_ > 5 and norm < 0.001:
 		break
 
 
@@ -48,7 +48,7 @@ for iter_y in range(10):
 		print(int(GroundTruth[iter_y][iter_x]), end = " ")
 	print()
 
-print(ans.argmax())
+print(GroundTruth.argmax())
 
 RRRow = np.zeros(10)
 CCCol = np.zeros(10)
