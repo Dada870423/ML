@@ -67,9 +67,9 @@ for i in range(10):
 for i in range(10):
     RrR = int(RRRow[i])
     CcC = int(CCCol[i])
-    A = ans[RrR][CcC]
-    B = ans[:, CcC].sum() - A
-    C = ans[RrR].sum() - A
+    A = GroundTruth[RrR][CcC]
+    B = GroundTruth[:, CcC].sum() - A
+    C = GroundTruth[RrR].sum() - A
     D = B + C - A
     print("Confusion Matrix", i, ":")
     print("Confusion Matrix:\n                Predict number ", i, "   Predict cluster ", i)
