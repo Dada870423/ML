@@ -68,7 +68,7 @@ for i in range(10):
 
 for i in range(10):
 	RrR = (np.where(RRRow == i))[0][0]
-    CcC = int(CCCol[RrR])
+	CcC = int(CCCol[RrR])
     A = GroundTruth[i][CcC]
     B = GroundTruth[:, CcC].sum() - A
     C = GroundTruth[i].sum() - A
