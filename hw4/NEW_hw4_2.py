@@ -17,13 +17,13 @@ hidden_W = np.ones((input_N, 10))
 #Binomial_matrix = Binomial_matrix
 jimmy = 100 # big number!!
 Label_fptr = Get_label_fptr(label_file = "file/train-labels-idx1-ubyte")
-label = np.zeros((10, 6500))
+label = np.zeros((10, 6800))
 
 
 
 Binomial_matrix = Get_Binomial(train_image_file = train_image_file)
 
-old_lamBda = np.zeors(10)
+old_lamBda = np.zeros(10)
 
 
 for iter_ in range(30):
