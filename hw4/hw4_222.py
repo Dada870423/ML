@@ -7,7 +7,8 @@ from UTIL import *
 from MNIST import *
 
 from fuck_EM import *
-
+train_label_file = "file/train-labels-idx1-ubyte"
+train_image_file = "file/train-images-idx3-ubyte"
 
 
 Binomial_matrix = Get_Binomial(train_image_file = train_image_file)

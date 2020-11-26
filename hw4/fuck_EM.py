@@ -7,14 +7,14 @@ from numba import jit
 input_N = 60000
 lamBda = np.ones(10)
 probability = np.random.rand(28 * 28, 10)
-hidden_W = np.ones((self.input_N, 10))
+hidden_W = np.ones((input_N, 10))
 #Binomial_matrix = Binomial_matrix
 jimmy = 100 # big number!!
 Label_fptr = Get_label_fptr(label_file = "file/train-labels-idx1-ubyte")
 label = np.zeros((10, 500))
 
 
-
+@jit
 def E_step(Binomial_matrix):
     for iter_image in range(input_N):
         for iter_digit in range(10):
@@ -36,7 +36,7 @@ def E_step(Binomial_matrix):
     hidden_W[hidden_W<0.001] = 0.001
 
 
-
+@jit
 def M_step(Binomial_matrix):
     for iter_digit in range(10):
         lamBda[iter_digit] = 0.0
@@ -59,7 +59,7 @@ def M_step(Binomial_matrix):
     lamBda= norm_probability(lamBda)
 
 
-
+@jit
 def Test():
     GroundTruth = np.zeros((10, 10))
     items = Get_label_100()
@@ -69,6 +69,8 @@ def Test():
             print("-- ", iter_digit, " --   : ", ans.argmax())
             GroundTruth[iter_digit][ans.argmax()] += 1
     return GroundTruth
+
+@jit
 def Cal_w(Binomial_matrix, image_th):
     ans = np.ones(10)
     for iter_pixel in range(28 * 28):
@@ -85,7 +87,7 @@ def Cal_w(Binomial_matrix, image_th):
     ans = norm_probability(ans)
     return ans
 
-
+@jit
 def Get_label_100():
     items = np.zeros(10)
     for iter_label in range(1000):
