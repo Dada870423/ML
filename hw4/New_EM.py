@@ -68,7 +68,7 @@ def Test(Binomial_matrix, Label_fptr, label, probability):
             for iter_pixel in range(28 * 28):
                 for iter_digit in range(10):
                 
-                    if Binomial_matrix[image_th][iter_pixel] == 1:
+                    if Binomial_matrix[int(label[iter_digit][iter_item])][iter_pixel] == 1:
                         ans[iter_digit] *= probability[iter_pixel][iter_digit]
                     else:
                         ans[iter_digit] *= (1 - probability[iter_pixel][iter_digit])
