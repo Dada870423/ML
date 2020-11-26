@@ -17,7 +17,7 @@ hidden_W = np.ones((input_N, 10))
 #Binomial_matrix = Binomial_matrix
 jimmy = 100 # big number!!
 Label_fptr = Get_label_fptr(label_file = "file/train-labels-idx1-ubyte")
-label = np.zeros((10, 6800))
+
 
 
 
@@ -40,18 +40,19 @@ for iter_ in range(30):
 
 
 
-GroundTruth = Test(Binomial_matrix, Label_fptr, label, probability)
+#GroundTruth = Test(Binomial_matrix, Label_fptr, label, probability = probability)
 
+gt = Cal_from_W(hidden_W, Label_fptr, input_N)
 
 for iter_y in range(10):
 	for iter_x in range(10):
-		print(int(GroundTruth[iter_y][iter_x]), end = " ")
+		print(int(gt[iter_y][iter_x]), end = " ")
 	print()
 
-print("GTTTT", GroundTruth)
-print("GT.argmax", GroundTruth.argmax())
+print("GTTTT", gt)
 
-tmp = copy.deepcopy(GroundTruth)
+
+tmp = copy.deepcopy(gt)
 RRRow = np.zeros(10)
 CCCol = np.zeros(10)
 
@@ -69,9 +70,9 @@ for i in range(10):
 for i in range(10):
     RrR = (np.where(RRRow == i))[0][0]
     CcC = int(CCCol[RrR])
-    A = GroundTruth[i][CcC]
-    B = GroundTruth[:, CcC].sum() - A
-    C = GroundTruth[i].sum() - A
+    A = gt[i][CcC]
+    B = gt[:, CcC].sum() - A
+    C = gt[i].sum() - A
     D = 60000 - (B + C) + A
     print("Confusion Matrix", i, ":")
     print("Confusion Matrix:\n                Predict number ", i, "   Predict cluster ", i)
