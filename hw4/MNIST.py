@@ -1,8 +1,8 @@
 import numpy as np
 from UTIL import *
-from numba import jit
 
-@jit
+
+
 def Get_Binomial(train_image_file):
 	#print("train_image_file")
 	input_N = 60000

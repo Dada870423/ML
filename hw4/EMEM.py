@@ -21,7 +21,7 @@ class EMEM(object):
     def E_step(self):
         for iter_image in range(self.input_N):
             for iter_digit in range(10):
-                self.hidden_W[iter_image][iter_digit] = copy.deepcopy(self.lamBda[iter_digit])
+                self.hidden_W[iter_image][iter_digit] = self.lamBda[iter_digit]
         for iter_image in range(self.input_N):
             for iter_pixel in range(28 * 28):
                 for iter_digit in range(10):
@@ -34,7 +34,7 @@ class EMEM(object):
                 if iter_pixel % 10 == 0:
                     self.hidden_W[iter_image] = norm_probability(self.hidden_W[iter_image])
                     #self.hidden_W[iter_image][iter_digit] *= self.jimmy
-            self.hidden_W[iter_image] = copy.deepcopy(norm_probability(self.hidden_W[iter_image]))
+            self.hidden_W[iter_image] = norm_probability(self.hidden_W[iter_image])
 
             
         self.hidden_W[self.hidden_W<0.001] = 0.001
