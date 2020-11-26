@@ -70,7 +70,7 @@ for i in range(10):
     A = GroundTruth[RrR][CcC]
     B = GroundTruth[:, CcC].sum() - A
     C = GroundTruth[RrR].sum() - A
-    D = B + C - A
+    D = 60000 - (B + C) + A
     print("Confusion Matrix", i, ":")
     print("Confusion Matrix:\n                Predict number ", i, "   Predict cluster ", i)
     print("Is number    ", i, "       ", A, "                  ", B)
