@@ -88,8 +88,7 @@ def Get_label_100(Label_fptr, label):
         xxx = int(items[label_now])
         label[label_now][xxx] = iter_label
         items[label_now] = items[label_now] + 1
-    for iter_digit in range(10):
-        for iter_item in range(int(items[iter_digit])):
+
             #print(label[iter_digit][iter_item], end = " ")
         #print("--------  ", iter_digit, "\n")
     #print("items", items)
