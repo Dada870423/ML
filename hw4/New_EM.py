@@ -58,7 +58,7 @@ def Test(Binomial_matrix, Label_fptr, label, probability):
     items = Get_label_100(Label_fptr, label)
     for iter_digit in range(10):
         for iter_item in range(int(items[iter_digit])):
-            ans = Cal_w(Binomial_matrix, image_th = int(label[iter_digit][iter_item]), probability)
+            ans = Cal_w(Binomial_matrix, image_th = int(label[iter_digit][iter_item]), probability = probability)
             print("-- ", iter_digit, " --   : ", ans.argmax())
             GroundTruth[iter_digit][ans.argmax()] += 1
     return GroundTruth
