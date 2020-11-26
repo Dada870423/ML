@@ -1,9 +1,11 @@
 import numpy as np
 from UTIL import *
+from numba import jit
 
+@jit
 def Get_Binomial(train_image_file):
 	#print("train_image_file")
-	input_N = 1000
+	input_N = 60000
 	binomial_mat = np.zeros((input_N, 28 * 28))
 	Image_fptr = init_data(image_file = train_image_file)
 	for iter_image in range(input_N):

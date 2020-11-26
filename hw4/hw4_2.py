@@ -2,6 +2,7 @@ import numpy as np
 #import argparse
 from gaussian import *
 
+
 from UTIL import *
 
 from MNIST import *
@@ -105,20 +106,20 @@ print("lambda", eMeM.lamBda)
 #
 #print(eMeM.probability[3][160])
 #
-for iter_y in range(28):
-    for iter_x in range(28):
-        print(eMeM.probability[iter_x + iter_y * 28][1], end = " ")
-    print()
-    #line = bio_ptr.readline()
-for i in range(10):
-	for iter_y in range(28):
-	    for iter_x in range(28):
-	    	if eMeM.probability[iter_x + iter_y * 28][i] < 0.4:
-	    		print("0", end = "")
-	    	else:
-	    		print("1", end = "")
-	    print()
-	print("\n\n\n")
+#for iter_y in range(28):
+#    for iter_x in range(28):
+#        print(eMeM.probability[iter_x + iter_y * 28][1], end = " ")
+#    print()
+#    #line = bio_ptr.readline()
+#for i in range(10):
+#	for iter_y in range(28):
+#	    for iter_x in range(28):
+#	    	if eMeM.probability[iter_x + iter_y * 28][i] < 0.4:
+#	    		print("0", end = "")
+#	    	else:
+#	    		print("1", end = "")
+#	    print()
+#	print("\n\n\n")
 
 
 GroundTruth = eMeM.Test()
