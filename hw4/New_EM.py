@@ -74,13 +74,26 @@ def Test(Binomial_matrix, Label_fptr, label, probability):
                         ans[iter_digit] *= (1 - probability[iter_pixel][iter_digit])
                     ## deal with underflow
                 if iter_pixel % 10 == 0:
-                    ans = norm_probability(ans)
+                    ans /= ans.sum()
                     #hidden_W[iter_image][iter_digit] *= jimmy
-            ans = norm_probability(ans)
-            #ans = Cal_w(Binomial_matrix, image_th = int(label[iter_digit][iter_item]), probability = probability)
-            #print("-- ", iter_digit, " --   : ", ans.argmax())
+            ans /= ans.sum()
             GroundTruth[iter_digit][ans.argmax()] += 1
     return GroundTruth
+
+
+def print_P(probability):
+    for i in range(10):
+        print("\nclass ", i, ":")
+        for iter_y in range(28):
+            for iter_x in range(28):
+                if probability[iter_x + iter_y * 28][i] < 0.4:
+                    print("0", end = "")
+                else:
+                    print("1", end = "")
+            print()
+        print("\n\n")
+
+
 
 #@jit
 #def Cal_w(Binomial_matrix, image_th, probability):

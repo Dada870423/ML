@@ -29,11 +29,11 @@ old_lamBda = np.zeros(10)
 for iter_ in range(30):
 	E_step(Binomial_matrix, input_N = input_N, lamBda = lamBda, probability = probability, hidden_W = hidden_W)
 	M_step(Binomial_matrix, lamBda, hidden_W, probability, input_N)
-	print(hidden_W[3])
-	print(hidden_W[4])
-	print(hidden_W[5])
-	print("lambda", lamBda)
+	print_P(probability)
+	
 	norm = np.linalg.norm(old_lamBda - lamBda)
+	print("No. of Iteration: ", i, " , Difference:",  "diff", "\n")
+	print("-" * 73)
 	old_lamBda = copy.deepcopy(lamBda)
 	if iter_ > 5 and norm < 0.0001:
 		break
@@ -42,14 +42,47 @@ for iter_ in range(30):
 
 GroundTruth = Test(Binomial_matrix, Label_fptr, label, probability)
 
-
+tmp = copy.deepcopy(GroundTruth)
 for iter_y in range(10):
 	for iter_x in range(10):
 		print(int(GroundTruth[iter_y][iter_x]), end = " ")
 	print()
 
-for iter_y in range(10):
-	print(iter_y, "->   : ", GroundTruth[iter_y].argmax())
+print(ans.argmax())
+
+RRRow = np.zeros(10)
+CCCol = np.zeros(10)
+
+for i in range(10):
+    now = tmp.argmax()
+    row = int(now / 10)
+    col = now % 10
+    print(row, "  --> ", col)
+    RRRow[i] = row
+    CCCol[i] = col
+    tmp[row] = 0
+    tmp[:, col] = 0
+
+
+for i in range(10):
+    RrR = int(RRRow[i])
+    CcC = int(CCCol[i])
+    A = ans[RrR][CcC]
+    B = ans[:, CcC].sum() - A
+    C = ans[RrR].sum() - A
+    D = B + C - A
+    print("Confusion Matrix", i, ":")
+    print("Confusion Matrix:\n                Predict number ", i, "   Predict cluster ", i)
+    print("Is number    ", i, "       ", A, "                  ", B)
+    print("Isn't number ", i, "       ", C, "                  ", D, "\n")
+    print("Sensitivity (Successfully predict cluster 1): ", A / (A + B))
+    print("Specificity (Successfully predict cluster 2): ", D / (C + D))
+
+
+
+
+
+
 
 
 
