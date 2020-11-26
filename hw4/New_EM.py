@@ -52,7 +52,7 @@ def M_step(Binomial_matrix, lamBda, hidden_W, probability, input_N):
     lamBda /= lamBda.sum()
 
 
-
+@jit
 def Test(Binomial_matrix, Label_fptr, label, probability):
     GroundTruth = np.zeros((10, 10))
     items = Get_label_100(Label_fptr, label)
@@ -63,7 +63,7 @@ def Test(Binomial_matrix, Label_fptr, label, probability):
             GroundTruth[iter_digit][ans.argmax()] += 1
     return GroundTruth
 
-
+@jit
 def Cal_w(Binomial_matrix, image_th, probability):
     ans = np.ones(10)
     for iter_pixel in range(28 * 28):
@@ -80,10 +80,10 @@ def Cal_w(Binomial_matrix, image_th, probability):
     ans = norm_probability(ans)
     return ans
 
-
+@jit
 def Get_label_100(Label_fptr, label):
     items = np.zeros(10)
-    for iter_label in range(1000):
+    for iter_label in range(60000):
         label_now = get_label(Label_fptr)
         xxx = int(items[label_now])
         label[label_now][xxx] = iter_label
