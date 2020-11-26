@@ -53,7 +53,7 @@ def M_step(Binomial_matrix, lamBda, hidden_W, probability, input_N):
 
 
 
-def Test(Binomial_matrix, Label_fptr):
+def Test(Binomial_matrix, Label_fptr, label):
     GroundTruth = np.zeros((10, 10))
     items = Get_label_100(Label_fptr)
     for iter_digit in range(10):
@@ -81,7 +81,7 @@ def Cal_w(Binomial_matrix, image_th):
     return ans
 
 
-def Get_label_100(Label_fptr):
+def Get_label_100(Label_fptr, label):
     items = np.zeros(10)
     for iter_label in range(1000):
         label_now = get_label(Label_fptr)
