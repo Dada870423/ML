@@ -27,14 +27,14 @@ Binomial_matrix = Get_Binomial(train_image_file = train_image_file)
 
 E_step(Binomial_matrix, input_N = input_N, lamBda = lamBda, probability = probability, hidden_W = hidden_W)
 M_step(Binomial_matrix, lamBda, hidden_W, probability, input_N)
-print(eMeM.hidden_W[3])
-print(eMeM.hidden_W[4])
-print(eMeM.hidden_W[5])
-print("lambda", eMeM.lamBda)
+print(hidden_W[3])
+print(hidden_W[4])
+print(hidden_W[5])
+print("lambda", lamBda)
 
 
 
-GroundTruth = Test(Binomial_matrix, Label_fptr, label)
+GroundTruth = Test(Binomial_matrix, Label_fptr, label, probability)
 
 
 for iter_y in range(10):
