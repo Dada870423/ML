@@ -121,7 +121,13 @@ for i in range(10):
 	print("\n\n\n")
 
 
-eMeM.Test()
+GroundTruth = eMeM.Test()
+
+
+for iter_y in range(10):
+	for iter_x in range(10):
+		print(GroundTruth[iter_y][iter_x], end = " ")
+	print()
 
 #
 #
