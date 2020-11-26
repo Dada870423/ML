@@ -72,7 +72,7 @@ class EMEM(object):
 
 
     def Test(self):
-        GroundTruth = np.zeors((10, 10))
+        GroundTruth = np.zeros((10, 10))
         items = self.Get_label_100()
         for iter_digit in range(10):
             for iter_item in range(int(items[iter_digit])):

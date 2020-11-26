@@ -126,8 +126,12 @@ GroundTruth = eMeM.Test()
 
 for iter_y in range(10):
 	for iter_x in range(10):
-		print(GroundTruth[iter_y][iter_x], end = " ")
+		print(int(GroundTruth[iter_y][iter_x]), end = " ")
 	print()
+
+for iter_y in range(10):
+	print(iter_y, "->   : ", GroundTruth[iter_y].argmax())
+
 
 #
 #
