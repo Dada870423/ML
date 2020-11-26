@@ -4,18 +4,11 @@ import copy
 from numba import jit
 
 
-input_N = 60000
-lamBda = np.ones(10)
-probability = np.random.rand(28 * 28, 10)
-hidden_W = np.ones((input_N, 10))
-#Binomial_matrix = Binomial_matrix
-jimmy = 100 # big number!!
-Label_fptr = Get_label_fptr(label_file = "file/train-labels-idx1-ubyte")
-label = np.zeros((10, 500))
+
 
 
 @jit
-def E_step(Binomial_matrix):
+def E_step(Binomial_matrix, input_N, lamBda, probability, hidden_W):
     for iter_image in range(input_N):
         for iter_digit in range(10):
             hidden_W[iter_image][iter_digit] = lamBda[iter_digit]
@@ -37,7 +30,7 @@ def E_step(Binomial_matrix):
 
 
 @jit
-def M_step(Binomial_matrix):
+def M_step(Binomial_matrix, lamBda, hidden_W, probability, input_N):
     for iter_digit in range(10):
         lamBda[iter_digit] = 0.0
         for iter_image in range(input_N):
