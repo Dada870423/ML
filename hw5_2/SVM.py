@@ -72,6 +72,8 @@ class SupportVectorMachine():
             self.compare()
         elif self.mode == 1:
             self.grid()
+        else:
+            self.linear_RBF()
         return result
 
     def compare(self):
@@ -118,6 +120,20 @@ class SupportVectorMachine():
         print "Gamma : ", Best_gamma
         print "Cost : ", Best_cost
         print "acc : ", Best_rate
+
+
+    def linear_RBF(self):
+        gamma = 1 / (28 * 28)
+
+        train_y, train_x = svm_read_problem("Train_file.txt")
+        test_y, test_x = svm_read_problem("Test_file.txt")
+
+        linear_kernel = train_x @ train_x.T
+
+        My_Kernel = np.hstack((np.arange(1, 2501)[:, None], linear_kernel))
+        print(My_Kernel.shape)
+        #for iter_y in range()
+
 
 
 
