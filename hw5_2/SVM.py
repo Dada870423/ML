@@ -73,9 +73,9 @@ class SupportVectorMachine():
         return result
 
     def compare(self):
-        linear_param = svm_parameter("-t 0")
-        poly_param = svm_parameter("-t 1")
-        RBF_param = svm_parameter("-t 2")
+        linear_param = svm_parameter('-t 0')
+        poly_param = svm_parameter('-t 1')
+        RBF_param = svm_parameter('-t 2')
         train_y, train_x = svm_read_problem("Train_file.txt")
         test_y, test_x = svm_read_problem("Test_file.txt")
 
