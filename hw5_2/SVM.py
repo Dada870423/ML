@@ -69,22 +69,29 @@ class SupportVectorMachine():
     def RUN(self):
         result = 0
         if self.mode == 0:
-            p_label, p_acc, p_val = self.compare()
-            print(p_label, p_acc, p_val)
+            self.compare()
         return result
 
     def compare(self):
-        param = svm_parameter('-t 0')
-        y, x = svm_read_problem("Train_file.txt")
-        yt, xt = svm_read_problem("Test_file.txt")
+        linear_param = svm_parameter("-t 0")
+        poly_param = svm_parameter("-t 1")
+        RBF_param = svm_parameter("-t 2")
+        train_y, train_x = svm_read_problem("Train_file.txt")
+        test_y, test_x = svm_read_problem("Test_file.txt")
 
-        model = svm_train(y, x)
-        p_label, p_acc, p_val = svm_predict(yt, xt, model)
+        linear_model = svm_train(train_y, train_x, linear_param)
+        linear_label, linear_acc, linear_val = svm_predict(test_y, test_x, linear_model)
 
+
+        poly_model = svm_train(train_y, train_x, poly_param)
+        poly_label, poly_acc, poly_val = svm_predict(test_y, test_x, poly_model)
+
+        RBF_model = svm_train(train_y, train_x, RBF_param)
+        RBF_label, RBF_acc, RBF_val = svm_predict(test_y, test_x, RBF_model)
         #prob  = svm_problem(self.TrainLabel, self.TrainImage)
         #m = svm_train(prob, param)
         #res = svm_predict(self.TestLabel, self.TestImage, m)
-        return p_label, p_acc, p_val
+        return linear_label, poly_label, RBF_label
 
 
 
