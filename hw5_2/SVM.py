@@ -73,20 +73,20 @@ class SupportVectorMachine():
         return result
 
     def compare(self):
-        linear_param = svm_parameter('-t 0')
-        poly_param = svm_parameter('-t 1')
-        RBF_param = svm_parameter('-t 2')
+        #linear_param = svm_parameter('-t 0')
+        #poly_param = svm_parameter('-t 1')
+        #RBF_param = svm_parameter('-t 2')
         train_y, train_x = svm_read_problem("Train_file.txt")
         test_y, test_x = svm_read_problem("Test_file.txt")
 
-        linear_model = svm_train(train_y, train_x, linear_param)
+        linear_model = svm_train(train_y, train_x, '-t 0')
         linear_label, linear_acc, linear_val = svm_predict(test_y, test_x, linear_model)
 
 
-        poly_model = svm_train(train_y, train_x, poly_param)
+        poly_model = svm_train(train_y, train_x, '-t 1')
         poly_label, poly_acc, poly_val = svm_predict(test_y, test_x, poly_model)
 
-        RBF_model = svm_train(train_y, train_x, RBF_param)
+        RBF_model = svm_train(train_y, train_x, '-t 2')
         RBF_label, RBF_acc, RBF_val = svm_predict(test_y, test_x, RBF_model)
 
         print("linear_acc : ", linear_acc[0])
