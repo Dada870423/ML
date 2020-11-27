@@ -4,9 +4,9 @@ from SVM import *
 
 mode = int(input("your mode :  "))
 
-file = ["X_train.csv​", "Y_train.csv​"]
+file = ["X_train.csv", "Y_train.csv"]
 
-print("X_train.csv​")
+print("X_train.csv")
 
 
 if mode == 0:
