@@ -45,17 +45,25 @@ class SupportVectorMachine():
         list_of_floats = [int(item) for a_list in  test_list  for item in a_list]
         self.TestLabel = np.array(list_of_floats)
 
-    def Output_txt(self):
-        Train_out_ptr = open("Train.txt", "w")
-        for iter_image in range(3):
+    def Output_train_file(self):
+        Train_out_ptr = open("Train_file.txt", "w")
+        for iter_image in range(5000):
             line = str(self.TrainLabel[iter_image])
             for iter_pixel in range(28 * 28):
                 line += " " + str(iter_pixel) + ":" + str(self.TrainImage[iter_image * 784 + iter_pixel])
             line += "\n"
             Train_out_ptr.write(line)
-        f.close()
+        Train_out_ptr.close()
 
-
+    def Output_test_file(self):
+        Test_out_ptr = open("Test_file.txt", "w")
+        for iter_image in range(2500):
+            line = str(self.TestLabel[iter_image])
+            for iter_pixel in range(28 * 28):
+                line += " " + str(iter_pixel) + ":" + str(self.TestImage[iter_image * 784 + iter_pixel])
+            line += "\n"
+            Test_out_ptr.write(line)
+        Test_out_ptr.close()
 
 
     def RUN(self):

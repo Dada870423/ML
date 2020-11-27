@@ -1,4 +1,5 @@
 import numpy as np
+import os
 
 from SVM import *
 
@@ -19,12 +20,22 @@ else:
     print("input the valid mode")
     exit(0)
 
+train_file = "./Train_file.txt"
+test_file = "./Test_file.txt"
+
 svm = SupportVectorMachine(mode = mode)
 
-svm.ReadTrainingFile(file = ["X_train.csv", "Y_train.csv"])
+if not os.path.isfile(train_file):
+    svm.ReadTrainingFile(file = ["X_train.csv", "Y_train.csv"])
+else:
+    print("not exist")
+    svm.Output_train_file()
+if not os.path.isfile(test_file):
+    svm.ReadTestFile(file = ["X_test.csv", "Y_test.csv"])
+else:
+    print("not exist")
+    svm.Output_test_file()
 
-svm.ReadTestFile(file = ["X_test.csv", "Y_test.csv"])
 
-svm.Output_txt()
 
 
