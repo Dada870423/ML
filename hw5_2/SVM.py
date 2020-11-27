@@ -1,7 +1,7 @@
 import numpy as np
 import sys
 import csv
-#from svmutil import *
+from svmutil import *
 #from libsvm.python.svmutil import *
 #from libsvm.python.svm import *
 
@@ -69,15 +69,22 @@ class SupportVectorMachine():
     def RUN(self):
         result = 0
         if self.mode == 0:
-            result = self.compare()
+            p_label, p_acc, p_val = self.compare()
+            print(p_label, p_acc, p_val)
         return result
 
     def compare(self):
         param = svm_parameter('-t 0')
-        prob  = svm_problem(self.TrainLabel, self.TrainImage)
-        m = svm_train(prob, param)
-        res = svm_predict(self.TestLabel, self.TestImage, m)
-        return res
+        y, x = svm_read_problem("Train_file.txt")
+        yt, xt = svm_read_problem("Test_file.txt")
+
+        model = svm_train(y, x)
+        p_label, p_acc, p_val = svm_predict(yt, xt, model)
+
+        #prob  = svm_problem(self.TrainLabel, self.TrainImage)
+        #m = svm_train(prob, param)
+        #res = svm_predict(self.TestLabel, self.TestImage, m)
+        return p_label, p_acc, p_val
 
 
 

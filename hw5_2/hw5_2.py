@@ -25,17 +25,20 @@ test_file = "./Test_file.txt"
 
 svm = SupportVectorMachine(mode = mode)
 
-if not os.path.isfile(train_file):
+if os.path.isfile(train_file):
+    print("exist")
+else:
+    print("not exist")
     svm.ReadTrainingFile(file = ["X_train.csv", "Y_train.csv"])
-else:
-    print("not exist")
     svm.Output_train_file()
-if not os.path.isfile(test_file):
-    svm.ReadTestFile(file = ["X_test.csv", "Y_test.csv"])
+
+if os.path.isfile(test_file):
+    print("exist")
 else:
     print("not exist")
+    svm.ReadTestFile(file = ["X_test.csv", "Y_test.csv"])
     svm.Output_test_file()
 
-
+svm.RUN()
 
 
