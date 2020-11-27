@@ -98,8 +98,8 @@ class SupportVectorMachine():
         print "RBF_acc : ", RBF_acc[0]
 
     def grid(self):
-        Cost = [2 ** (15 - 2 * i) for i in range(3)]#11)]
-        Gamma = [2 ** (3 - 2 * i) for i in range(3)]#10)]
+        Cost = [2 ** (15 - 2 * i) for i in range(11)]
+        Gamma = [2 ** (3 - 2 * i) for i in range(10)]
         Best_gamma = np.zeros(3)
         Best_cost = np.zeros(3)
         Best_rate = np.zeros(3)   
