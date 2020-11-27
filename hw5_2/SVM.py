@@ -70,6 +70,8 @@ class SupportVectorMachine():
         result = 0
         if self.mode == 0:
             self.compare()
+        elif self.mode == 1:
+            self.grid()
         return result
 
     def compare(self):
@@ -89,12 +91,32 @@ class SupportVectorMachine():
         RBF_model = svm_train(train_y, train_x, '-t 2')
         RBF_label, RBF_acc, RBF_val = svm_predict(test_y, test_x, RBF_model)
 
-        print("linear_acc : ", linear_acc[0])
-        print("poly_acc : ", poly_acc[0])
-        print("RBF_acc : ", RBF_acc[0])
-        #prob  = svm_problem(self.TrainLabel, self.TrainImage)
-        #m = svm_train(prob, param)
-        #res = svm_predict(self.TestLabel, self.TestImage, m)
+        print "linear_acc : ", linear_acc[0] 
+        print "poly_acc : ", poly_acc[0]
+        print "RBF_acc : ", RBF_acc[0]
+
+    def grid(self):
+        Cost = [2 ** (15 - 2 * i) for i in range(3)]#11)]
+        Gamma = [2 ** (3 - 2 * i) for i in range(3)]#10)]
+        Best_gamma = np.zeros(3)
+        Best_cost = np.zeros(3)
+        Best_rate = np.zeros(3)   
+
+        train_y, train_x = svm_read_problem("Train_file.txt")
+        test_y, test_x = svm_read_problem("Test_file.txt")
+
+        for kernel in range(3):
+            for iter_cost in Cost:
+                for iter_gamma in Gamma:
+                    opt = '-s 0 -k ' + str(kernel) + ' -c ' + str(iter_cost) + ' -g ' + str(iter_gamma) + ' -v 5'
+                    label, acc, val = svm_train(train_y, train_x, opt)
+                    if acc[0] > Best_rate[kernel]:
+                        Best_gamma[kernel] = iter_gamma
+                        Best_cost[kernel] = iter_cost
+                        Best_rate[kernel] = acc[0]
+        print "Gamma : ", Best_gamma
+        print "Cost : ", Best_cost
+        print "acc : ", Best_rate
 
 
 
