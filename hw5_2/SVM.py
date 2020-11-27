@@ -133,7 +133,7 @@ class SupportVectorMachine():
         np_test_y = np.array(test_y)
         np_test_x = np.array(test_x)
 
-        linear_kernel = np_train_x @ np_train_x.T
+        linear_kernel = np_train_x.dot(np_train_x.T)
 
         My_Kernel = np.hstack((np.arange(1, 2501)[:, None], linear_kernel))
         print(My_Kernel.shape)
