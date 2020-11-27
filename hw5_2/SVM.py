@@ -88,10 +88,14 @@ class SupportVectorMachine():
 
         RBF_model = svm_train(train_y, train_x, RBF_param)
         RBF_label, RBF_acc, RBF_val = svm_predict(test_y, test_x, RBF_model)
+
+        print("linear_acc : ", linear_acc[0])
+        print("poly_acc : ", poly_acc[0])
+        print("RBF_acc : ", RBF_acc[0])
         #prob  = svm_problem(self.TrainLabel, self.TrainImage)
         #m = svm_train(prob, param)
         #res = svm_predict(self.TestLabel, self.TestImage, m)
-        return linear_label, poly_label, RBF_label
+
 
 
 
