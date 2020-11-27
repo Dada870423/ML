@@ -108,8 +108,9 @@ class SupportVectorMachine():
         for kernel in range(3):
             for iter_cost in Cost:
                 for iter_gamma in Gamma:
-                    opt = '-s 0 -k ' + str(kernel) + ' -c ' + str(iter_cost) + ' -g ' + str(iter_gamma) + ' -v 5'
-                    label, acc, val = svm_train(train_y, train_x, opt)
+                    opt = '-s 0 -t ' + str(kernel) + ' -c ' + str(iter_cost) + ' -g ' + str(iter_gamma) + ' -v 5'
+                    model = svm_train(train_y, train_x, opt)
+                    label, acc, val = svm_predict(test_y, test_x, model)
                     if acc[0] > Best_rate[kernel]:
                         Best_gamma[kernel] = iter_gamma
                         Best_cost[kernel] = iter_cost
