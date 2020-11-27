@@ -47,10 +47,10 @@ class SupportVectorMachine():
 
     def Output_txt(self):
         Train_out_ptr = open("Train.txt", "w")
-        for iter_ in range(3):
-            line = str(self.TrainLabel[iter_])
+        for iter_image in range(3):
+            line = str(self.TrainLabel[iter_image])
             for iter_pixel in range(28 * 28):
-                line += " " + str(iter_pixel) + ":" + str(self.TrainImage)
+                line += " " + str(iter_pixel) + ":" + str(self.TrainImage[iter_image * 784 + iter_pixel])
             line += "\n"
             Train_out_ptr.write(line)
         f.close()
