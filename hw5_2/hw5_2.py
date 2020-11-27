@@ -25,9 +25,6 @@ svm.ReadTrainingFile(file = ["X_train.csv", "Y_train.csv"])
 
 svm.ReadTestFile(file = ["X_test.csv", "Y_test.csv"])
 
-svm.RUN()
-
-
-svm.print_image(4)
+svm.Output_txt()
 
 
