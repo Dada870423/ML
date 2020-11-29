@@ -124,7 +124,7 @@ class SupportVectorMachine():
     def RBF(self, X1, X2):
         gamma = 1 / (28 * 28)
         norm = np.linalg.norm(X1 - X2)
-        distance = nrom ** 2
+        distance = norm ** 2
 
         return np.exp(-gamma * distance)
     
@@ -159,8 +159,8 @@ class SupportVectorMachine():
             for iter_row in range(1, row):
                 Test_Kernel[iter_col][iter_row] += self.RBF(X1 = self.TestImage[iter_col], X2 = self.TrainImage[iter_row - 1])
 
-        model = svm_train(train_y, My_Kernel, '-s 0 -t 4')
-        label, acc, val = svm_predict(test_y, Test_Kernel, model)
+        model = svm_train(train_y, list(My_Kernel), '-s 0 -t 4')
+        label, acc, val = svm_predict(test_y, list(Test_Kernel), model)
 
         print "User-defined kernel : ", acc[0] 
 
