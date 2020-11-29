@@ -128,7 +128,7 @@ class SupportVectorMachine():
         train_y, train_x = svm_read_problem("Train_file.txt")
         test_y, test_x = svm_read_problem("Test_file.txt")
 
-        self.ReadTestFile(file = ["X_train.csv", "Y_train.csv"])
+        self.ReadTrainingFile(file = ["X_train.csv", "Y_train.csv"])
         self.ReadTestFile(file = ["X_test.csv", "Y_test.csv"])
 
         #np_train_x = np.array(train_x)
@@ -136,7 +136,7 @@ class SupportVectorMachine():
         #np_test_y = np.array(test_y)
         #np_test_x = np.array(test_x)
 
-        linear_kernel = self.TrainImage @ self.TrainImage
+        linear_kernel = self.TrainImage.dot(self.TrainImage)
 
         My_Kernel = np.hstack((np.arange(1, 2501)[:, None], linear_kernel))
         print(My_Kernel.shape)
