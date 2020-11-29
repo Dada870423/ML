@@ -17,7 +17,7 @@ class SupportVectorMachine():
         image_ptr = open(file[0], "r")
         test_list = list(csv.reader(image_ptr))
         list_of_floats = [float(item) for a_list in  test_list  for item in a_list]
-        self.TrainImage = list(np.array(list_of_floats))
+        self.TrainImage = np.array(list_of_floats)
         #self.TrainImage = np.array(list_of_floats).astype(np.float64)
         #print(haha)
 
