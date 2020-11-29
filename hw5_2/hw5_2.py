@@ -11,11 +11,11 @@ print("X_train.csv")
 
 
 if mode == 0:
-    print("comparison")
+    print("Comparison")
 elif mode == 1:
     print("C-SVC")
 elif mode == 2:
-    print("user-defined kernel")
+    print("User-defined kernel")
 else:
     print("input the valid mode")
     exit(0)

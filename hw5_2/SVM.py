@@ -121,9 +121,15 @@ class SupportVectorMachine():
         print "Cost : ", Best_cost
         print "acc : ", Best_rate
 
-
-    def linear_RBF(self):
+    def RBF(self, X1, X2):
         gamma = 1 / (28 * 28)
+        norm = np.linalg.norm(X1 - X2)
+        distance = nrom ** 2
+
+        return np.exp(-gamma * distance)
+    
+    def linear_RBF(self):
+        
 
         train_y, train_x = svm_read_problem("Train_file.txt")
         test_y, test_x = svm_read_problem("Test_file.txt")
@@ -140,9 +146,23 @@ class SupportVectorMachine():
 
         My_Kernel = np.hstack((np.arange(1, 5001)[:, None], linear_kernel))
         print(My_Kernel.shape)
-        #for iter_y in range()
+        col, row = My_Kernel.shape
+        for iter_col in range(col):
+            for iter_row in range(1, row):
+                My_Kernel[iter_col][iter_row] += self.RBF(X1 = self.TrainImage[iter_col], X2 = self.TrainImage[iter_row - 1])
 
 
+        test_linear_kernel = self.TestImage.dot(self.TrainImage.T)
+        Test_Kernel = np.hstack((np.arange(1, 2501)[:, None], test_linear_kernel))
+        col, row = Test_Kernel.shape
+        for iter_col in range(col):
+            for iter_row in range(1, row):
+                Test_Kernel[iter_col][iter_row] += self.RBF(X1 = self.TestImage[iter_col], X2 = self.TrainImage[iter_row - 1])
+
+        model = svm_train(train_y, My_Kernel, '-s 0 -t 4')
+        label, acc, val = svm_predict(test_y, Test_Kernel, model)
+
+        print "User-defined kernel : ", acc[0] 
 
 
 
