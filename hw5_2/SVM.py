@@ -1,7 +1,8 @@
 import numpy as np
 import sys
 import csv
-from svmutil import *
+from libsvm.svmutil import *
+#from svmutil import *
 #from libsvm.python.svmutil import *
 #from libsvm.python.svm import *
 
@@ -93,9 +94,9 @@ class SupportVectorMachine():
         RBF_model = svm_train(train_y, train_x, '-t 2')
         RBF_label, RBF_acc, RBF_val = svm_predict(test_y, test_x, RBF_model)
 
-        print "linear_acc : ", linear_acc[0] 
-        print "poly_acc : ", poly_acc[0]
-        print "RBF_acc : ", RBF_acc[0]
+        print ("linear_acc : ", linear_acc[0] )
+        print ("poly_acc : ", poly_acc[0])
+        print ("RBF_acc : ", RBF_acc[0])
 
     def grid(self):
         Cost = [2 ** (15 - 2 * i) for i in range(11)]
@@ -117,9 +118,9 @@ class SupportVectorMachine():
                         Best_gamma[kernel] = iter_gamma
                         Best_cost[kernel] = iter_cost
                         Best_rate[kernel] = float(acc)
-        print "Gamma : ", Best_gamma
-        print "Cost : ", Best_cost
-        print "acc : ", Best_rate
+        print ("Gamma : ", Best_gamma)
+        print ("Cost : ", Best_cost)
+        print ("acc : ", Best_rate)
 
     def RBF(self, X1, X2):
         gamma = 1 / (28 * 28)
@@ -146,23 +147,23 @@ class SupportVectorMachine():
 
         My_Kernel = np.hstack((np.arange(1, 5001)[:, None], linear_kernel))
         print(My_Kernel.shape)
-        col, row = My_Kernel.shape
-        for iter_col in range(col):
-            for iter_row in range(1, row):
-                My_Kernel[iter_col][iter_row] += self.RBF(X1 = self.TrainImage[iter_col], X2 = self.TrainImage[iter_row - 1])
+        #col, row = My_Kernel.shape
+        #for iter_col in range(col):
+        #    for iter_row in range(1, row):
+        #        My_Kernel[iter_col][iter_row] += self.RBF(X1 = self.TrainImage[iter_col], X2 = self.TrainImage[iter_row - 1])
 
 
         test_linear_kernel = self.TestImage.dot(self.TrainImage.T)
         Test_Kernel = np.hstack((np.arange(1, 2501)[:, None], test_linear_kernel))
-        col, row = Test_Kernel.shape
-        for iter_col in range(col):
-            for iter_row in range(1, row):
-                Test_Kernel[iter_col][iter_row] += self.RBF(X1 = self.TestImage[iter_col], X2 = self.TrainImage[iter_row - 1])
+        #col, row = Test_Kernel.shape
+        #for iter_col in range(col):
+        #    for iter_row in range(1, row):
+        #        Test_Kernel[iter_col][iter_row] += self.RBF(X1 = self.TestImage[iter_col], X2 = self.TrainImage[iter_row - 1])
 
-        model = svm_train(train_y, list(My_Kernel), '-s 0 -t 4')
-        label, acc, val = svm_predict(test_y, list(Test_Kernel), model)
+        model = svm_train(train_y, My_Kernel, '-t 4')
+        label, acc, val = svm_predict(test_y, Test_Kernel, model)
 
-        print "User-defined kernel : ", acc[0] 
+        print ("User-defined kernel : ", acc[0])
 
 
 
