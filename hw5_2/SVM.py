@@ -17,7 +17,7 @@ class SupportVectorMachine():
         image_ptr = open(file[0], "r")
         test_list = list(csv.reader(image_ptr))
         list_of_floats = [float(item) for a_list in  test_list  for item in a_list]
-        self.TrainImage = np.array(list_of_floats)
+        self.TrainImage = np.array(list_of_floats).reshape(5000, 784)
         #self.TrainImage = np.array(list_of_floats).astype(np.float64)
         #print(haha)
 
@@ -37,7 +37,7 @@ class SupportVectorMachine():
         test_list = list(csv.reader(image_ptr))
         print(np.size(test_list))
         list_of_floats = [float(item) for a_list in  test_list  for item in a_list]
-        self.TestImage = np.array(list_of_floats)
+        self.TestImage = np.array(list_of_floats).reshape(2500, 784)
         #self.TestImage = np.array(list_of_floats)
 
         label_ptr = open(file[1], "r")
@@ -50,7 +50,7 @@ class SupportVectorMachine():
         for iter_image in range(5000):
             line = str(self.TrainLabel[iter_image])
             for iter_pixel in range(28 * 28):
-                line += " " + str(iter_pixel) + ":" + str(self.TrainImage[iter_image * 784 + iter_pixel])
+                line += " " + str(iter_pixel) + ":" + str(self.TrainImage[iter_image][iter_pixel])
             line += "\n"
             Train_out_ptr.write(line)
         Train_out_ptr.close()
@@ -60,7 +60,7 @@ class SupportVectorMachine():
         for iter_image in range(2500):
             line = str(self.TestLabel[iter_image])
             for iter_pixel in range(28 * 28):
-                line += " " + str(iter_pixel) + ":" + str(self.TestImage[iter_image * 784 + iter_pixel])
+                line += " " + str(iter_pixel) + ":" + str(self.TestImage[iter_image][iter_pixel])
             line += "\n"
             Test_out_ptr.write(line)
         Test_out_ptr.close()
@@ -136,9 +136,9 @@ class SupportVectorMachine():
         #np_test_y = np.array(test_y)
         #np_test_x = np.array(test_x)
 
-        linear_kernel = self.TrainImage.dot(self.TrainImage)
+        linear_kernel = self.TrainImage.dot(self.TrainImage.T)
 
-        My_Kernel = np.hstack((np.arange(1, 2501)[:, None], linear_kernel))
+        My_Kernel = np.hstack((np.arange(1, 5001)[:, None], linear_kernel))
         print(My_Kernel.shape)
         #for iter_y in range()
 
