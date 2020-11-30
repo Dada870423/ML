@@ -1,44 +1,19 @@
 import numpy as np
 import os
-
 from SVM import *
 
-mode = int(input("your mode :  "))
+mode = int(input("your mode :  ")) ##Choose which part to run
 
-file = ["X_train.csv", "Y_train.csv"]
-
-print("X_train.csv")
-
-
-if mode == 0:
-    print("Comparison")
-elif mode == 1:
-    print("C-SVC")
-elif mode == 2:
-    print("User-defined kernel")
-else:
+if mode < 0 or mode >2:
     print("input the valid mode")
     exit(0)
 
-train_file = "./Train_file.txt"
-test_file = "./Test_file.txt"
-
 svm = SupportVectorMachine(mode = mode)
 
-if os.path.isfile(train_file):
-    print("exist")
-else:
-    print("not exist")
+if not os.path.isfile("./Train_file.txt"):
     svm.ReadTrainingFile(file = ["X_train.csv", "Y_train.csv"])
-    svm.Output_train_file()
 
-if os.path.isfile(test_file):
-    print("exist")
-else:
-    print("not exist")
+if not os.path.isfile("./Test_file.txt"):
     svm.ReadTestFile(file = ["X_test.csv", "Y_test.csv"])
-    svm.Output_test_file()
 
 svm.RUN()
-
-
