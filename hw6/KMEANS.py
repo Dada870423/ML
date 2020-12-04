@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 import random
 from scipy.spatial.distance import pdist, squareform
+import copy
 
 
 def Read_image(file):    
@@ -18,7 +19,11 @@ def Kmeans(Gram, k):
     error = 100
     classify = np.zeros(len(Gram))
     distance = np.zeros(k, int)
-    while error < 10:
+    New_mean = np.zeros((k, Gram.shape[1]))
+    GIF = np.zeros((1, 100, 100))
+    it = 0
+    while error > 1:
+        it += 1
         ## E-step
         for iter_pixel in range(len(Gram)):
             for iter_k in range(k):
@@ -26,14 +31,27 @@ def Kmeans(Gram, k):
             classify[iter_pixel] = distance.argmin()
 
         ## M-step
-        New_mean = np.zeros((k, Gram.shape[1]))
+        
         for iter_k in range(k):
+            print(mean.shape)
             In_k_cluster = Gram[classify == iter_k]
+            print("In_k_cluster", iter_k, In_k_cluster.shape)
             New_mean[iter_k] = In_k_cluster.sum(axis = 0)
             if len(In_k_cluster) > 0:
                 New_mean[iter_k] /= len(In_k_cluster)
 
-        error = #???
+        error = np.linalg.norm(New_mean - mean)
+        mean = copy.deepcopy(New_mean)
+        GIF = np.vstack((GIF, classify.reshape(1, 100, 100)))
+        print(error)
+        for iter_pixel in range(10000):
+            if iter_pixel % 100 == 0:
+                print()
+            print(int(classify[iter_pixel]), end = "")
+        print("\n\n")
+        if it > 10:
+            break
+    return it, GIF
 
         
 
@@ -71,14 +89,17 @@ def PreComputed_kernel(image, Gamma_s, Gamma_c):
         Spatial[iter_y] = [iter_y // row, iter_y % row]
 
     ## size = ((row * (row-1)) // 2)
-    Kernel_S = np.exp(- Gamma_s * pdist(Spatial,'sqeuclidean'))
+    Kernel_S = (- Gamma_s * pdist(Spatial, 'sqeuclidean'))
 
-    Kernel_C = np.exp(- Gamma_c * pdist(image,'sqeuclidean'))
+    Kernel_C = (- Gamma_c * pdist(image, 'sqeuclidean'))
+    print(Kernel_C)
 
-    Kernelone = (Kernel_S * Kernel_C)
+    Kernelone = np.exp(Kernel_S + Kernel_C)
 
     Kernel = squareform(Kernelone)
-    print("one", Kernelone.shape)
+    print("one", Kernel.shape)
+    #for i in range(len(Kernelone)):
+    #    print(Kernelone[i], end = " ")
 
     return Kernel
 
