@@ -7,8 +7,8 @@ from KMEANS import *
 from SPECTRAL import *
 
 file = "./image1.png"
-Gamma_s = 0.00000001 ## for spatial
-Gamma_c = 0.00001 ## for color
+Gamma_s = 0.00005 ## for spatial
+Gamma_c = 0.00002 ## for color
 
 #test_123 = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
 
@@ -29,12 +29,14 @@ Gram = PreComputed_kernel(image = image, Gamma_s = Gamma_s, Gamma_c = Gamma_c)
 #GIF = Kmeans(Gram = Gram, k = 4)
 #print(it)
 #print("GIF", GIF.shape)
-#imageio.mimsave("GIf4_1.gif", GIF)
+
 #mean_iter_point = get_init_mean(Gram, 2)
 
 #print(mean_iter_point)
 
-Spectral(Gram = Gram, k = 2)
+GIF = Spectral(Gram = Gram, k = 2)
 
+
+imageio.mimsave("GiF_spectral_1.gif", GIF)
 
 print()
