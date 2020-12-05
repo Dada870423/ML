@@ -7,7 +7,7 @@ from KMEANS import *
 from SPECTRAL import *
 
 file = "./image1.png"
-Gamma_s = 0.00005 ## for spatial
+Gamma_s = 0.0000005 ## for spatial
 Gamma_c = 0.00002 ## for color
 
 #test_123 = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
