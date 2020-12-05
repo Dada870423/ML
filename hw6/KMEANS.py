@@ -51,7 +51,7 @@ def Kmeans(Gram, k):
         print("\n\n")
         if it > 10:
             break
-    return it, GIF
+    return GIF
 
         
 
@@ -92,12 +92,12 @@ def PreComputed_kernel(image, Gamma_s, Gamma_c):
     Kernel_S = (- Gamma_s * pdist(Spatial, 'sqeuclidean'))
 
     Kernel_C = (- Gamma_c * pdist(image, 'sqeuclidean'))
-    print(Kernel_C)
+    #print(Kernel_C)
 
     Kernelone = np.exp(Kernel_S + Kernel_C)
 
     Kernel = squareform(Kernelone)
-    print("one", Kernel.shape)
+    #print("one", Kernel.shape)
     #for i in range(len(Kernelone)):
     #    print(Kernelone[i], end = " ")
 

@@ -4,6 +4,7 @@ from scipy.spatial.distance import pdist, squareform
 import imageio
 
 from KMEANS import *
+from SPECTRAL import *
 
 file = "./image1.png"
 Gamma_s = 0.00000001 ## for spatial
@@ -25,17 +26,15 @@ Gram = PreComputed_kernel(image = image, Gamma_s = Gamma_s, Gamma_c = Gamma_c)
 #
 #
 #print(Gram.shape)
-it, GIF = Kmeans(Gram = Gram, k = 2)
-print(it)
-print("GIF", GIF.shape)
-imageio.mimsave("GIf1.gif", GIF)
+#GIF = Kmeans(Gram = Gram, k = 4)
+#print(it)
+#print("GIF", GIF.shape)
+#imageio.mimsave("GIf4_1.gif", GIF)
 #mean_iter_point = get_init_mean(Gram, 2)
 
 #print(mean_iter_point)
 
-
-print(Gram.shape)
-print(len(Gram))
+Spectral(Gram = Gram, k = 2)
 
 
 print()
