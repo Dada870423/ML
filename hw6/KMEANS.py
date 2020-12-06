@@ -4,6 +4,9 @@ import random
 from scipy.spatial.distance import pdist, squareform
 import copy
 
+### good parameter for kmeans & kmeans++
+## Gamma_s = 0.0000001 ## for spatial
+## Gamma_c = 0.0002 ## for color
 
 def Read_image(file):    
     image = cv2.imread(file)
@@ -13,12 +16,12 @@ def Read_image(file):
     return image_10000_3
 
 
-def Kmeans(Gram, k):
-    mean = get_init_mean(Gram = Gram, k = k)
+def Kmeans(Gram, k, mode):
+    mean = get_init_mean(Gram = Gram, k = k, mode = mode)
 
     error = 100
-    classify = np.zeros(len(Gram))
-    distance = np.zeros(k, int)
+    classify = np.zeros(len(Gram), int)
+    distance = np.zeros(k)
     New_mean = np.zeros((k, Gram.shape[1]))
     GIF = np.zeros((1, 100, 100))
     it = 0
@@ -61,20 +64,47 @@ def Kmeans(Gram, k):
 
 
 
-def get_init_mean(Gram, k):
+def get_init_mean(Gram, k, mode = 0):
     mean_iter_point = np.zeros(k, int)
-    iter_ = 0
-    while iter_ < k:
-        point = random.randint(1, len(Gram))
-        print("point", point)
-        if not point in mean_iter_point:
-            mean_iter_point[iter_] = point
-            iter_ = iter_ + 1
+    ## kmeans
+    if mode == 0:
+        iter_ = 0
+        while iter_ < k:
+            point = random.randint(1, len(Gram))
+            print("point", point)
+            if not point in mean_iter_point:
+                mean_iter_point[iter_] = point
+                iter_ = iter_ + 1
+        mean_iter_point -= 1
 
-    mean_iter_point -= 1
+    elif mode == 1: ## kmeans++
+        print("kmean++++++++++++")
+        #Center = np.zeros((k, Gram.shape[1]))
+        mean_iter_point[0] = random.randint(0, len(Gram) - 1)
+        #Center[0] = Gram[mean_iter_point[0]]
+        for iter_center in range(1, k):
+            center_distance = np.zeros(len(Gram))
+            classify = np.zeros(len(Gram))
+            closest_dis = np.zeros(k)
+            for iter_pixel in range(len(Gram)):
+                for iter_k in range(iter_center):
+                    closest_dis[iter_k] = np.linalg.norm(Gram[iter_pixel] - Gram[mean_iter_point[iter_k]])
+                classify[iter_pixel] = closest_dis.argmin()
 
-
+                center_distance[iter_pixel] = np.linalg.norm(Gram[iter_pixel] - Gram[int(mean_iter_point[int(classify[iter_pixel])])])
+            SSUUMM = np.sum(center_distance)
+            target = random.uniform(0, SSUUMM)
+            for iter_dis in range(len(center_distance)):
+                target = target - center_distance[iter_dis]
+                if target <= 0:
+                    mean_iter_point[iter_center] = iter_dis
+                    print("kmean++", mean_iter_point)
+                    break
     return Gram[mean_iter_point]
+
+    
+
+
 
 
 

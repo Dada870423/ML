@@ -10,8 +10,8 @@ def Spectral(Gram, k):
 
     ## compute the first k eigenvectors
 
-    saved_vectors_sort = "./vector_S_75_C_52_sort.npy"
-    saved_values_sort = "./value_S_75_C_52_sort.npy"
+    saved_vectors_sort = "./T_vector_S_75_C_52_sort.npy"
+    saved_values_sort = "./T_value_S_75_C_52_sort.npy"
     if not os.path.isfile(saved_vectors_sort):
         # degree matrix
         Degree = np.diag(np.sum(Gram, axis=1))
