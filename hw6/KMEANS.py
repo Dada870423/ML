@@ -46,14 +46,13 @@ def Kmeans(Gram, k, mode):
         error = np.linalg.norm(New_mean - mean)
         mean = copy.deepcopy(New_mean)
         GIF = np.vstack((GIF, classify.reshape(1, 100, 100)))
-        print(error)
+        print(error, " it: ", it)
         for iter_pixel in range(10000):
             if iter_pixel % 100 == 0:
                 print()
             print(int(classify[iter_pixel]), end = "")
         print("\n\n")
-        if it > 10:
-            break
+
     return GIF
 
         
@@ -102,7 +101,7 @@ def get_init_mean(Gram, k, mode = 0):
                     break
     return Gram[mean_iter_point]
 
-    
+
 
 
 

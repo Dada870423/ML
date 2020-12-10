@@ -6,7 +6,7 @@ import imageio
 from KMEANS import *
 from SPECTRAL import *
 
-file = "./image2.png"
+file = "./image1.png"
 Gamma_s = 0.0000001 ## for spatial
 Gamma_c = 0.0002 ## for color
 
@@ -26,7 +26,7 @@ Gram = PreComputed_kernel(image = image, Gamma_s = Gamma_s, Gamma_c = Gamma_c)
 #
 #
 #print(Gram.shape)
-GIF = Kmeans(Gram = Gram, k = 5, mode = 1)
+#GIF = Kmeans(Gram = Gram, k = 5, mode = 1)
 
 #mean = get_init_mean(Gram = Gram, k = 4, mode = 1)
 #print(it)
@@ -36,9 +36,9 @@ GIF = Kmeans(Gram = Gram, k = 5, mode = 1)
 
 #print(mean_iter_point)
 
-#GIF = Spectral(Gram = Gram, k = 2)
+GIF = Spectral(Gram = Gram, k = 3, mode = 1)
 
 
-imageio.mimsave("KmeansPP_image2.gif", GIF)
+imageio.mimsave("Spectral_eric.gif", GIF)
 
 print()
