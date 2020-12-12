@@ -8,6 +8,7 @@ import copy
 ## Gamma_s = 0.0000001 ## for spatial
 ## Gamma_c = 0.0002 ## for color
 
+## read file
 def Read_image(file):    
     image = cv2.imread(file)
     height, width, C = image.shape
@@ -15,8 +16,9 @@ def Read_image(file):
 
     return image_10000_3
 
-
+## Kmeans clustering
 def Kmeans(Gram, k, mode):
+    ## init the means in kmeans
     mean = get_init_mean(Gram = Gram, k = k, mode = mode)
 
     error = 100
@@ -34,7 +36,6 @@ def Kmeans(Gram, k, mode):
             classify[iter_pixel] = distance.argmin()
 
         ## M-step
-        
         for iter_k in range(k):
             print(mean.shape)
             In_k_cluster = Gram[classify == iter_k]
@@ -43,9 +44,9 @@ def Kmeans(Gram, k, mode):
             if len(In_k_cluster) > 0:
                 New_mean[iter_k] /= len(In_k_cluster)
 
-        error = np.linalg.norm(New_mean - mean)
+        error = np.linalg.norm(New_mean - mean) ## cal error
         mean = copy.deepcopy(New_mean)
-        GIF = np.vstack((GIF, classify.reshape(1, 100, 100)))
+        GIF = np.vstack((GIF, classify.reshape(1, 100, 100))) ## making GIF file
         print(error, " it: ", it)
         for iter_pixel in range(10000):
             if iter_pixel % 100 == 0:
@@ -55,17 +56,10 @@ def Kmeans(Gram, k, mode):
 
     return GIF
 
-        
-
-
-
-
-
-
 
 def get_init_mean(Gram, k, mode = 0):
     mean_iter_point = np.zeros(k, int)
-    ## kmeans
+    ## get the means using randoms mode
     if mode == 0:
         iter_ = 0
         while iter_ < k:
@@ -78,9 +72,7 @@ def get_init_mean(Gram, k, mode = 0):
 
     elif mode == 1: ## kmeans++
         print("kmean++++++++++++")
-        #Center = np.zeros((k, Gram.shape[1]))
         mean_iter_point[0] = random.randint(0, len(Gram) - 1)
-        #Center[0] = Gram[mean_iter_point[0]]
         for iter_center in range(1, k):
             center_distance = np.zeros(len(Gram))
             classify = np.zeros(len(Gram))
@@ -117,37 +109,9 @@ def PreComputed_kernel(image, Gamma_s, Gamma_c):
     for iter_y in range(row):
         Spatial[iter_y] = [iter_y // row, iter_y % row]
 
-    ## size = ((row * (row-1)) // 2)
     Kernel_S = (- Gamma_s * pdist(Spatial, 'sqeuclidean'))
-
     Kernel_C = (- Gamma_c * pdist(image, 'sqeuclidean'))
-    #print(Kernel_C)
 
-    Kernelone = np.exp(Kernel_S + Kernel_C)
-
-    Kernel = squareform(Kernelone)
-    #print("one", Kernel.shape)
-    #for i in range(len(Kernelone)):
-    #    print(Kernelone[i], end = " ")
+    Kernel = squareform(np.exp(Kernel_S + Kernel_C))
 
     return Kernel
-
-#    it = 0
-
-#    for iter_y in range(1, row):
-#        for iter_x in range(iter_y):
-#            Kernel_S[it] = RBF(X1 = Spatial[iter_y], X2 = [iter_x], gamma = Gamma_s)
-#            #print(it, end = " ")
-#            #print("(", iter_y, ", ", iter_x, ")", end = " ")
-#            it = it + 1
-#        #print()
-#
-#    print(Kernel_S.shape)
-
-
-
-def RBF(X1, X2, gamma): ## function of calculating RBF
-    norm = np.linalg.norm(X1 - X2)
-    distance = norm ** 2
-
-    return np.exp(-gamma * distance)
