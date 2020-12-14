@@ -37,6 +37,9 @@ for iter_m in range(m):
             GIF_Kmeans_output[iter_m].append(color)
 
 GIF_Kmeans_output = np.array(GIF_Kmeans_output).reshape((m, 100, 100, 3))
+#imageio.mimsave("Kmeas_S_7_C_42_color2.gif", GIF_Kmeans_output)
+
+
 
 m, n, p = GIF_spectral.shape
 
@@ -55,8 +58,8 @@ GIF_spectral_output = np.array(GIF_spectral_output).reshape((m, 100, 100, 3))
 
 
 
-imageio.mimsave("Kmeas_S_7_C_42_color2.gif", GIF_Kmeans_output)
-imageio.mimsave("Spectral_I2_S_7_C_42_color2.gif", GIF_spectral_output)
+
+#imageio.mimsave("Spectral_I2_S_7_C_42_color2.gif", GIF_spectral_output)
 
 
 

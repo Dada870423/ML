@@ -3,6 +3,7 @@ import os
 
 from KMEANS import *
 from scipy import linalg
+import cv2
 
 
 def Spectral(Gram, k, mode = 1):
@@ -16,7 +17,7 @@ def Spectral(Gram, k, mode = 1):
     if not os.path.isfile(saved_vectors_sort):
         # degree matrix
         Degree = np.sum(Gram, axis=1)
-        Laplacian = Degree - Gram
+        Laplacian = np.diag(Degree) - Gram
         D__1_2 = np.diag(Degree ** (-0.5))
         Laplacian_sym = D__1_2 @ Laplacian @ D__1_2
 
@@ -48,6 +49,8 @@ def Spectral(Gram, k, mode = 1):
     #GIF = Kmeans(Gram = Eigen_Vector_T, k = k)
     print(Eigen_Vector_trans[0])
 
+    visualize(Eigen_Vector, k)
+
     Gram_spectral = Spectral_kernel(Eigen_Vector = Eigen_Vector_trans, Gamma = 0.001)
     GIF = Kmeans(Gram = Gram_spectral, k = k, mode = mode)
 
@@ -60,6 +63,17 @@ def Spectral_kernel(Eigen_Vector, Gamma):
     Kernel = squareform(Kernelone)
 
     return Kernel
+
+def visualize(Eigen_Vector, k):
+    ## norm eigenvector
+    for i in range(k):
+        vector = Eigen_Vector[i]
+        pre_norm = vector - min(pre_norm)
+        norm = pre_norm / max(pre_norm) * 255
+        norm_size = norm.reshape(100, 100)
+        for iter_i in range(100):
+            for iter_j in range(100):
+                cv2.imwrite("visual" + str(i), norm_size)
 
 
 
