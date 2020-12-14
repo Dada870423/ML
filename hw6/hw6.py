@@ -33,7 +33,7 @@ for iter_m in range(m):
     GIF_Kmeans_output.append([])
     for iter_n in range(n):
         for iter_p in range(p):
-            GIF_Kmeans_output[m].append(color_list[int(GIF_Kmeans[m][n][p])])
+            GIF_Kmeans_output[iter_m].append(color_list[int(GIF_Kmeans[iter_m][iter_n][iter_p])])
 
 GIF_Kmeans_output = np.array(GIF_Kmeans_output).reshape((m, 100, 100, 3))
 
@@ -46,7 +46,7 @@ for iter_m in range(m):
     GIF_spectral_output.append([])
     for iter_n in range(n):
         for iter_p in range(p):
-            GIF_spectral_output[m].append(color_list[int(GIF_spectral_output[m][n][p])])
+            GIF_spectral_output[iter_m].append(color_list[int(GIF_spectral_output[iter_m][iter_n][iter_p])])
 
 GIF_spectral_output = np.array(GIF_spectral_output).reshape((m, 100, 100, 3))
 
