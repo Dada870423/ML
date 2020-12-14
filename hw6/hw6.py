@@ -22,7 +22,7 @@ GIF_spectral = Spectral(Gram = Gram, k = 2, mode = 0)
 ## Save Gif
 np.save("saved_GIF_Kmeans", GIF_Kmeans)
 
-color_list = [[0, 0, 0], [255, 255, 255], [255, 0, 0], [0, 255, 0], [0, 0, 255], [255, 255, 0], [255, 0, 255], [0, 255, 255]]
+color_list = [[255, 0, 0], [0, 255, 0], [0, 0, 255], [0, 0, 0], [255, 255, 255], [255, 255, 0], [255, 0, 255], [0, 255, 255]]
 
 m, n, p = GIF_Kmeans.shape
 
@@ -55,7 +55,7 @@ GIF_spectral_output = np.array(GIF_spectral_output).reshape((m, 100, 100, 3))
 
 
 
-imageio.mimsave("Spectral_sean.gif", GIF_Kmeans_output)
+imageio.mimsave("Kmeas_sean.gif", GIF_Kmeans_output)
 imageio.mimsave("Spectral_sean.gif", GIF_spectral_output)
 
 
