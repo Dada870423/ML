@@ -20,7 +20,7 @@ GIF_Kmeans = Kmeans(Gram = Gram, k = 2, mode = 1)
 ## Using Spectral clustering
 GIF_spectral = Spectral(Gram = Gram, k = 2, mode = 0)
 ## Save Gif
-
+np.save("saved_GIF_Kmeans", GIF_Kmeans)
 
 color_list = [[0, 0, 0], [255, 255, 255], [255, 0, 0], [0, 255, 0], [0, 0, 255], [255, 255, 0], [255, 0, 255], [0, 255, 255]]
 
@@ -30,7 +30,7 @@ m, n, p = GIF_Kmeans.shape
 GIF_Kmeans_output = []
 
 for iter_m in range(m):
-    GIF_Kmeans_output.appen([])
+    GIF_Kmeans_output.append([])
     for iter_n in range(n):
         for iter_p in range(p):
             GIF_Kmeans_output[m].append(color_list[int(GIF_Kmeans[m][n][p])])
@@ -43,7 +43,7 @@ m, n, p = GIF_spectral.shape
 GIF_spectral_output = []
 
 for iter_m in range(m):
-    GIF_spectral_output.appen([])
+    GIF_spectral_output.append([])
     for iter_n in range(n):
         for iter_p in range(p):
             GIF_spectral_output[m].append(color_list[int(GIF_spectral_output[m][n][p])])
