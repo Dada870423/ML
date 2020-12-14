@@ -7,8 +7,8 @@ from KMEANS import *
 from SPECTRAL import *
 
 file = "./image1.png"
-Gamma_s = 0.000005 ## for spatial
-Gamma_c = 0.000002 ## for color
+Gamma_s = 0.0000001 ## for spatial
+Gamma_c = 0.0002 ## for color
 
 image = Read_image(file = file) ## read file
 
@@ -55,8 +55,8 @@ GIF_spectral_output = np.array(GIF_spectral_output).reshape((m, 100, 100, 3))
 
 
 
-imageio.mimsave("Kmeas_sean.gif", GIF_Kmeans_output)
-imageio.mimsave("Spectral_sean.gif", GIF_spectral_output)
+imageio.mimsave("Kmeas_S_7_C_42_color2.gif", GIF_Kmeans_output)
+imageio.mimsave("Spectral_I2_S_7_C_42_color2.gif", GIF_spectral_output)
 
 
 

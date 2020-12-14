@@ -11,8 +11,8 @@ def Spectral(Gram, k, mode = 1):
 
     ## compute the first k eigenvectors
 
-    saved_vectors_sort = "./T_vector_S_65_C_62_sort.npy"
-    saved_values_sort = "./T_value_S_65_C_62_sort.npy"
+    saved_vectors_sort = "./T_vector_S_7_C_42_sort.npy"
+    saved_values_sort = "./T_value_S_7_C_42_sort.npy"
     if not os.path.isfile(saved_vectors_sort):
         # degree matrix
         Degree = np.sum(Gram, axis=1)
@@ -40,7 +40,7 @@ def Spectral(Gram, k, mode = 1):
 
     ## normalize
 
-    Eigen_Vector_trans = Eigen_Vector[0:k].T
+    Eigen_Vector_trans = Eigen_Vector[:, 0:k]
     for iter_row in range(len(Eigen_Vector_trans)):
         SSum = np.sum(Eigen_Vector_trans[iter_row])
         Eigen_Vector_trans[iter_row] = Eigen_Vector_trans[iter_row] / SSum
