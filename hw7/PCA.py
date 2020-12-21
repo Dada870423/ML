@@ -1,21 +1,16 @@
+from READFILE import *
+
 import numpy as np
 from scipy import linalg
 
-def PCA(images):
+def PCA(images, Size, FacePath):
     mean = np.mean(images, axis = 0)
-    #x_x_bar = images - mean
-    #print("x_x_bar", x_x_bar.shape)
-    #print("x_x_bar.T", x_x_bar.T.shape)
-    #x_x_bar_at_x_x_bar_T = (x_x_bar @ x_x_bar.T) 
-    #print("x_x_bar_at_x_x_bar_T", x_x_bar_at_x_x_bar_T.shape)
-    #covariance = x_x_bar_at_x_x_bar_T / len(iamges)
-    #print("covariance", covariance.shape)
-    covariance = np.zeros((50, 50))
-    for iter_image in range(len(images)):
-        x_x_bar = images[iter_image] - mean
-        covariance += x_x_bar @ x_x_bar
+
+    covariance = (images - mean) @ (images - mean).T
+
 
     covariance /= len(images)
+
 
     print("covariance", covariance.shape)
     print(covariance)
@@ -25,10 +20,20 @@ def PCA(images):
     Eigen_Value = eigen_values_unsorted[Eigen_index]
     Eigen_Vector = eigen_vectors_unsorted[Eigen_index]
 
-    eigen_vec = (images - mean).T @ Eigen_Vector
+    print("mean:", mean.shape)
+    print("Eigen_Vector", Eigen_Vector.shape)
 
-    for iter_vector in rnage(len(eigen_vec)):
+    eigen_vec = ((images - mean).T @ Eigen_Vector)[:, :25]
+
+
+
+    for iter_vector in range(25):
         eigen_vec[:, iter_vector] /= np.linalg.norm(eigen_vec[:, iter_vector])
 
-    return mean, W
+    EigenFace(Eigenface = eigen_vec, path = FacePath, Size = Size)
+    return mean, eigen_vec
+
+
+
+
 
