@@ -8,7 +8,7 @@ import numpy as np
 
 
 
-mode = 4
+mode = 5
 Size = (50, 50)
 
 
@@ -52,11 +52,11 @@ elif mode == 4: ## PCA kernel
     mean, PCA_EigenFace, W = PCA_Kernel(images, Gamma = 0.0001, method = 1)
     PCA_KNN(k = 4, images = images, EigenFace = PCA_EigenFace.T, proj_train_image = W, label = label, \
         test_images = test_images, test_label = test_label)
-
-
-
-
-
+elif mode == 5:
+    mean, LDA_EigenFace, W = LDA_Kernel(images = images, Gamma = 0.0001, label = label, method = 0)
+    #print(Eigen_Vector.shape) ## 135 * 135
+    PCA_KNN(k = 5, images = images, EigenFace = LDA_EigenFace.T, proj_train_image = W, label = label, \
+        test_images = test_images, test_label = test_label)
 
 
 

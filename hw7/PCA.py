@@ -83,7 +83,7 @@ def PCA_Kernel(images, Gamma, method = 0):
         pre_Kernal = images @ images.T
     else: ## RBF
         print("RBF kernel")
-        pre_Kernal = squareform(- Gamma * pdist(images, "sqeuclidean"))
+        pre_Kernal = squareform(np.exp(- Gamma * pdist(images, "sqeuclidean")))
 
     N1 = np.ones((len(images), len(images))) / len(images)
 
@@ -104,20 +104,7 @@ def PCA_Kernel(images, Gamma, method = 0):
 
     W = ((images - mean) @ (images - mean).T @ Eigen_Vector[:25].T) ## 135 * 25
 
-
-
-
     return mean, eigen_face, W
-
-
-
-
-
-
-
-
-
-
 
 
 
