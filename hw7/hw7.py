@@ -8,7 +8,7 @@ import numpy as np
 
 
 
-mode = 1
+mode = 4
 Size = (50, 50)
 
 
@@ -29,13 +29,30 @@ sample_image = test_images[index]
 if mode == 0: ## PCA
     
     print(index)
-    mean, PCA_EigenFace = PCA(images = images, Size = Size, FacePath = "./PCA/EigenFace/")
+    mean, PCA_EigenFace, W = PCA(images = images, Size = Size, FacePath = "./PCA/EigenFace/")
 
     Reconstruct(EigenFace = PCA_EigenFace, sample_image = sample_image, Size = Size, Path = "./PCA/")
 elif mode == 1: ##LDA 
-    mean, EigenFace = LDA(images = images, Size = Size, label = label, FacePath = "./LDA/EigenFace/")
+    mean, LDA_EigenFace, W = LDA(images = images, Size = Size, label = label, FacePath = "./newLDA/EigenFace/")
     #cate_mean, EigenFace = LDA(images = images, Size = Size, label = label, FacePath = "./LDA/EigenFace/")
-    #Reconstruct(EigenFace = EigenFace, sample_image = sample_image, Size = Size, Path = "./LDA/")
+    Reconstruct(EigenFace = LDA_EigenFace, sample_image = sample_image, Size = Size, Path = "./newLDA/")
+elif mode == 2: ## PCA KNN
+    mean, PCA_EigenFace, W = PCA(images = images, Size = Size, FacePath = None)
+    #print(Eigen_Vector.shape) ## 135 * 135
+    print("PCA_EigenFace", PCA_EigenFace.shape) ## 2500 * 135
+    PCA_KNN(k = 4, images = images, EigenFace = PCA_EigenFace.T, proj_train_image = W, label = label, \
+        test_images = test_images, test_label = test_label)
+elif mode == 3: ## LDA KNN
+    mean, LDA_EigenFace, W = LDA(images = images, Size = Size, label = label, FacePath = None)
+    #print(Eigen_Vector.shape) ## 135 * 135
+    print("LDA_EigenFace", LDA_EigenFace.shape) ## 2500 * 135
+    LDA_KNN(k = 5, images = images, EigenFace = LDA_EigenFace.T, proj_train_image = W, label = label, \
+        test_images = test_images, test_label = test_label)
+elif mode == 4: ## PCA kernel
+    mean, PCA_EigenFace, W = PCA_Kernel(images, Gamma = 0.0001, method = 1)
+    PCA_KNN(k = 4, images = images, EigenFace = PCA_EigenFace.T, proj_train_image = W, label = label, \
+        test_images = test_images, test_label = test_label)
+
 
 
 
