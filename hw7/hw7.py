@@ -5,57 +5,54 @@ from UTIL import *
 
 import random
 import numpy as np
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--mode", type = int, default = 0)
+input_ = parser.parse_args()
 
 
-
-mode = 5
+#mode = 1
 Size = (50, 50)
 
 
-TrainPath = "./Yale_Face_Database/Training/"
-TestPath = "./Yale_Face_Database/Testing/"
-images, label = Readfile(path = TrainPath, Size = Size)
-test_images, test_label = Readfile(path = TestPath, Size = Size)
+images, label = Readfile(path = "./Yale_Face_Database/Training/", Size = Size)
+test_images, test_label = Readfile(path = "./Yale_Face_Database/Testing/", Size = Size)
 
 
-
-cate = np.unique(np.array(label))
-
-print(cate.shape, cate)
-index = random.sample(range(len(test_label)), 10)
-sample_image = test_images[index]
+sample_image = test_images[random.sample(range(len(test_label)), 10)]
 
 
-if mode == 0: ## PCA
-    
-    print(index)
-    mean, PCA_EigenFace, W = PCA(images = images, Size = Size, FacePath = "./PCA/EigenFace/")
-
+if input_.mode == 0: 
+    ## Doing PCA and get the eigenface and W(dimension reduction)
+    PCA_mean, PCA_EigenFace, PCA_W = PCA(images = images, Size = Size, FacePath = "./PCA/EigenFace/")
     Reconstruct(EigenFace = PCA_EigenFace, sample_image = sample_image, Size = Size, Path = "./PCA/")
-elif mode == 1: ##LDA 
-    mean, LDA_EigenFace, W = LDA(images = images, Size = Size, label = label, FacePath = "./newLDA/EigenFace/")
-    #cate_mean, EigenFace = LDA(images = images, Size = Size, label = label, FacePath = "./LDA/EigenFace/")
-    Reconstruct(EigenFace = LDA_EigenFace, sample_image = sample_image, Size = Size, Path = "./newLDA/")
-elif mode == 2: ## PCA KNN
-    mean, PCA_EigenFace, W = PCA(images = images, Size = Size, FacePath = None)
-    #print(Eigen_Vector.shape) ## 135 * 135
-    print("PCA_EigenFace", PCA_EigenFace.shape) ## 2500 * 135
-    PCA_KNN(k = 4, images = images, EigenFace = PCA_EigenFace.T, proj_train_image = W, label = label, \
+
+    ## Doing LDA and get the fisherface and W(dimension reduction)
+    LDA_mean, LDA_EigenFace, LDA_W = LDA(images = images, Size = Size, label = label, FacePath = "./LDA/EigenFace/")
+    Reconstruct(EigenFace = LDA_EigenFace, sample_image = sample_image, Size = Size, Path = "./LDA/")
+
+elif input_.mode == 1: 
+    ## Doing PCA and get the eigenface and W(dimension reduction)
+    PCA_mean, PCA_EigenFace, PCA_W = PCA(images = images, Size = Size, FacePath = None)
+    ## Using PCA Knn on test image sets, I try to label the test images.
+    KNN("PCA", k = 3, images = images, EigenFace = PCA_EigenFace.T, proj_train_image = PCA_W, label = label, \
         test_images = test_images, test_label = test_label)
-elif mode == 3: ## LDA KNN
-    mean, LDA_EigenFace, W = LDA(images = images, Size = Size, label = label, FacePath = None)
-    #print(Eigen_Vector.shape) ## 135 * 135
-    print("LDA_EigenFace", LDA_EigenFace.shape) ## 2500 * 135
-    LDA_KNN(k = 5, images = images, EigenFace = LDA_EigenFace.T, proj_train_image = W, label = label, \
+    
+    ## Doing LDA and get the fisherface and W(dimension reduction)
+    LDA_mean, LDA_EigenFace, LDA_W = LDA(images = images, Size = Size, label = label, FacePath = None)
+    ## Using LDA Knn on test image sets, I try to label the test images.
+    KNN("LDA", k = 6, images = images, EigenFace = LDA_EigenFace.T, proj_train_image = LDA_W, label = label, \
         test_images = test_images, test_label = test_label)
-elif mode == 4: ## PCA kernel
-    mean, PCA_EigenFace, W = PCA_Kernel(images, Gamma = 0.0001, method = 1)
-    PCA_KNN(k = 4, images = images, EigenFace = PCA_EigenFace.T, proj_train_image = W, label = label, \
+
+elif input_.mode == 2: 
+    ## Doing kernel PCA and get the eigenface and W(dimension reduction)
+    PCA_mean, PCA_EigenFace, PCA_W = PCA_Kernel(images, Gamma = 0.0001, method = 1)
+    KNN("PCA", k = 3, images = images, EigenFace = PCA_EigenFace.T, proj_train_image = PCA_W, label = label, \
         test_images = test_images, test_label = test_label)
-elif mode == 5:
-    mean, LDA_EigenFace, W = LDA_Kernel(images = images, Gamma = 0.0001, label = label, method = 0)
-    #print(Eigen_Vector.shape) ## 135 * 135
-    PCA_KNN(k = 5, images = images, EigenFace = LDA_EigenFace.T, proj_train_image = W, label = label, \
+    ## Doing kernel LDA and get the fisherface and W(dimension reduction)
+    LDA_mean, LDA_EigenFace, LDA_W = LDA_Kernel(images = images, Gamma = 0.0001, label = label, method = 1)
+    KNN("LDA", k = 5, images = images, EigenFace = LDA_EigenFace.T, proj_train_image = LDA_W, label = label, \
         test_images = test_images, test_label = test_label)
 
 
