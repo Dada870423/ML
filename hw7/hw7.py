@@ -34,10 +34,12 @@ if input_.mode == 0:
 
 elif input_.mode == 1: 
     ## Doing PCA and get the eigenface and W(dimension reduction)
+    print("PCA:")
     PCA_mean, PCA_EigenFace, PCA_W = PCA(images = images, Size = Size, FacePath = None)
     ## Using PCA Knn on test image sets, I try to label the test images.
     KNN("PCA", k = 3, images = images, EigenFace = PCA_EigenFace.T, proj_train_image = PCA_W, label = label, \
         test_images = test_images, test_label = test_label)
+    print("LDA:")
     
     ## Doing LDA and get the fisherface and W(dimension reduction)
     LDA_mean, LDA_EigenFace, LDA_W = LDA(images = images, Size = Size, label = label, FacePath = None)

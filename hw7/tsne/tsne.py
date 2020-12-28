@@ -17,7 +17,6 @@ import pylab
 import imageio
 import matplotlib.pyplot as plt
 
-
 def Hbeta(D=np.array([]), beta=1.0):
     """
         Compute the perplexity and the P-row for a specific value of the
@@ -112,9 +111,7 @@ def tsne(labels, X=np.array([]), no_dims=2, initial_dims=50, perplexity=30.0):
         dimensionality to no_dims dimensions. The syntaxis of the function is
         `Y = tsne.tsne(X, no_dims, perplexity), where X is an NxD NumPy array.
     """
-    GIF = list()
     GIF_filename = list()
-
     # Check inputs
     if isinstance(no_dims, float):
         print("Error: array X should have type float.")
@@ -149,7 +146,7 @@ def tsne(labels, X=np.array([]), no_dims=2, initial_dims=50, perplexity=30.0):
         # Compute pairwise affinities
         sum_Y = np.sum(np.square(Y), 1)
         num = -2. * np.dot(Y, Y.T)
-        num = (np.exp(-np.add(np.add(num, sum_Y).T, sum_Y)))
+        num = 1. / (1. + np.add(np.add(num, sum_Y).T, sum_Y))
         num[range(n), range(n)] = 0.
         Q = num / np.sum(num)
         Q = np.maximum(Q, 1e-12)
@@ -157,7 +154,7 @@ def tsne(labels, X=np.array([]), no_dims=2, initial_dims=50, perplexity=30.0):
         # Compute gradient
         PQ = P - Q
         for i in range(n):
-            dY[i, :] = np.sum(np.tile(PQ[:, i], (no_dims, 1)).T * (Y[i, :] - Y), 0)
+            dY[i, :] = np.sum(np.tile(PQ[:, i] * num[:, i], (no_dims, 1)).T * (Y[i, :] - Y), 0)
 
         # Perform the update
         if iter < 20:
@@ -179,14 +176,20 @@ def tsne(labels, X=np.array([]), no_dims=2, initial_dims=50, perplexity=30.0):
         # Stop lying about P-values
         if iter == 100:
             P = P / 4.
+
         if iter % 50 == 0:
             pylab.scatter(Y[:, 0], Y[:, 1], 20, labels, cmap = "tab20")
-            pylab.savefig("PNG" + str(iter) + "_20.png")
-            GIF_filename.append("PNG" + str(iter) + "_20.png")
+            pylab.savefig("TSNE" + str(iter) + ".png")
+            GIF_filename.append("TSNE" + str(iter) + ".png")
+            pylab.clf()
+
 
 
     # Return solution
     return Y, GIF_filename, P, Q
+
+
+
 
 
 if __name__ == "__main__":
@@ -195,21 +198,19 @@ if __name__ == "__main__":
     X = np.loadtxt("mnist2500_X.txt")
     labels = np.loadtxt("mnist2500_labels.txt")
     Y, GIF_filename, P, Q = tsne(labels, X, 2, 50, 20.0)
-
-    #imageio.mimsave("SSNE.pdf", GIF)
-    pylab.scatter(Y[:, 0], Y[:, 1], 20, labels, cmap = "tab20")
+    pylab.scatter(Y[:, 0], Y[:, 1], 20, labels)
     pylab.savefig("final_20.png")
     GIF_filename.append("final_20.png")
     images = list()
     for filename in GIF_filename:
         images.append(imageio.imread(filename))
-    imageio.mimsave('SSNE_Final_20.gif', images)
+    imageio.mimsave('TSNE_Final_20.gif', images)
 
 
-    plt.title("Sne_high_20") 
+
+    plt.title("TSne_high_20") 
     plt.imshow(P, cmap='jet') 
-    plt.savefig("Sne_high_20.png") 
-    plt.title("Sne_low_20") 
+    plt.savefig("TSne_high_20.png") 
+    plt.title("TSne_low_20") 
     plt.imshow(Q, cmap='jet') 
-    plt.savefig("Sne_low_20.png")
-
+    plt.savefig("TSne_low_20.png")

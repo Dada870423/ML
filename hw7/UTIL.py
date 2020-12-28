@@ -3,19 +3,18 @@ import os
 from PIL import Image
 import cv2
 
-
+## norm the output images to 0~255
 def normalization(arr):
     if np.min(arr) < 0:
         arr -= np.min(arr)
     arr = arr / np.max(arr) * 255
     return arr
 
-
+## Using Image in PIL to plot the output imates
 def EigenFace(Eigenface, path, Size, number = 25):
     for iter_face in range(0, number):
-        arr = normalization(Eigenface.T[iter_face])
+        arr = normalization(Eigenface[iter_face])
 
-        print(arr)
         new_image = Image.fromarray(arr.reshape(Size)).convert('L')
         new_image.save(path + str(iter_face + 1) + ".png")
 
@@ -23,14 +22,14 @@ def EigenFace(Eigenface, path, Size, number = 25):
 
 def Reconstruct(EigenFace, sample_image, Size, Path):
     EigenFace = EigenFace.T
-    print("sample_image", sample_image.shape)
-    print("EigenFace", EigenFace[:, 0].shape)
 
+    ## Catch the important eigenface on each sample images
     for iter_image in range(len(sample_image)):
         OutputImage = np.zeros(Size[0] * Size[1])
         for iter_eigen in range(len(EigenFace)):
             OutputImage += EigenFace[iter_eigen] * sample_image[iter_image]
         
+        ## Output the original and reconstruct images, 
         sample_image_norm = normalization(sample_image)
         OutputImage_norm = normalization(OutputImage)
         Origin_Image = Image.fromarray(sample_image_norm[iter_image].reshape(Size)).convert('L')
@@ -40,32 +39,37 @@ def Reconstruct(EigenFace, sample_image, Size, Path):
         Reconstruct_Image.save(Path + "Reconstruction/" + str(iter_image + 1) +".png")
 
 
+def KNN(type_A, k, images, EigenFace, proj_train_image, label, test_images, test_label):
+    mean = np.mean(images, axis = 0)
+    ## project images on EigenFace or fisherface
+    if type_A == "PCA":
+        ## PCA
+        proj_test_image = ((test_images - mean) @ EigenFace.T) ## 30 * 25
+    else:
+        ## LDA
+        proj_test_image = ((test_images) @ EigenFace.T) ## 30 * 25
+    just_label = np.array(label)
 
-def Sort_Norm_eigen(eigen_values_unsorted, eigen_vectors_unsorted, mean, images):
-    Eigen_index = np.argsort(eigen_values_unsorted)
-    Eigen_Value = eigen_values_unsorted[Eigen_index]
-    Eigen_Vector = eigen_vectors_unsorted[Eigen_index]
-
-    print("mean:", mean.shape)
-    print("Eigen_Vector", Eigen_Vector.shape)
-
-    print("(images - mean).T ", ((images - mean).T).shape)
-
-    print("image", images.shape)
-
-    eigen_vec = ((images - mean) @ Eigen_Vector)[:, :25]
-
-    print(eigen_vec.shape, "eigen_vec")
-
-    for iter_vector in range(25):
-        eigen_vec[:, iter_vector] /= np.linalg.norm(eigen_vec[:, iter_vector])
-
-    print("eigen_vec", eigen_vec.shape)
-    return eigen_vec
+    ## normalizate all of the date to 0~255
+    proj_train_image_norm = np.zeros((proj_train_image.shape))
+    for iter_norm in range(len(proj_train_image_norm)):
+        proj_train_image_norm[iter_norm] = normalization(proj_train_image[iter_norm])
 
 
-
-
+    ## choose the k nearest neighbors to decide which class it is.
+    it = 0
+    for iter_test_image in range(len(proj_test_image)):
+        distance = np.zeros(len(label))
+        for iter_dis in range(len(label)):
+            distance[iter_dis] = np.linalg.norm(proj_train_image_norm[iter_dis] - proj_test_image[iter_test_image])
+        
+        outcome = list(just_label[np.argsort(distance)[:k]][:, 1])
+        ans = outcome[np.argmax([outcome.count(outcome[i]) for i in range(len(outcome))])]
+        
+        ## calculate the precise
+        if ans == test_label[iter_test_image][1]:
+            it += 1
+    print("outcome:", it)
 
 
 
